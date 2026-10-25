@@ -76,11 +76,13 @@
   // ======================= INSIDE (D = 1.6): salón | foodtruck | pizarra =======================
   const inL = g(svg);
   P = inL;
-  // deck and turf
-  el('rect', { x: -900, y: 745, width: 3900, height: 1400, fill: WOOD2 });
-  for (let y = 772; y < 2100; y += 28) el('line', { x1: -900, y1: y, x2: 3000, y2: y, stroke: '#7E4B2A', 'stroke-width': 3 });
+  // floor: wooden deck under the salón, plain cement where the truck is parked
+  el('rect', { x: -900, y: 745, width: 2020, height: 1400, fill: WOOD2 });
+  for (let y = 772; y < 2100; y += 28) el('line', { x1: -900, y1: y, x2: 1120, y2: y, stroke: '#7E4B2A', 'stroke-width': 3 });
+  el('rect', { x: 1120, y: 745, width: 1900, height: 1400, fill: '#CFCBC2', stroke: INK, 'stroke-width': 3 });
+  for (let x = 1120; x < 3000; x += 160) el('line', { x1: x, y1: 745, x2: x - 60, y2: 2100, stroke: '#B5B0A5', 'stroke-width': 3 });
+  for (let y = 840; y < 2100; y += 120) el('line', { x1: 1120, y1: y, x2: 3000, y2: y, stroke: '#B5B0A5', 'stroke-width': 3 });
   el('line', { x1: -900, y1: 745, x2: 3000, y2: 745, stroke: INK, 'stroke-width': 4 });
-  el('rect', { x: 1680, y: 745, width: 420, height: 46, fill: '#4FA25B' });
 
   // back of the salón (left of the truck): a wooden slat wall
   el('rect', { x: 120, y: 440, width: 1000, height: 305, fill: '#5E3A22', stroke: INK, 'stroke-width': 3 });
@@ -101,7 +103,6 @@
     sway(m, 1.4, '50% 100%', r(2.8, 3.6));
   }
   monstera(230, 772, 1.05);
-  monstera(1960, 790, 0.9);
 
   // salón tables (black metal, Tolix-style chairs)
   function table(x, baseY, items) {
@@ -190,11 +191,12 @@
   el('path', { d: 'M1178 392H1622L1656 344H1144Z', fill: CREAM, stroke: INK, 'stroke-width': 4 }, truck);
   el('text', { x: 1400, y: 380, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 30, fill: INK }, truck).textContent = "COLAO'";
 
-  // the chalkboard to the right of the truck
-  el('rect', { x: 1670, y: 410, width: 150, height: 336, fill: '#2C2C3E', stroke: WOOD, 'stroke-width': 10 });
-  el('text', { x: 1745, y: 466, 'text-anchor': 'middle', 'font-family': 'Kaushan Script, Brush Script MT, cursive', 'font-size': 30, fill: CREAM }).textContent = "Colao'";
-  [[1690, 500, 80], [1690, 522, 108], [1690, 544, 64], [1690, 578, 100], [1690, 600, 72], [1690, 634, 110], [1690, 656, 86], [1690, 690, 64]]
-    .forEach(([x, y, w]) => el('rect', { x, y, width: w, height: 5, rx: 2, fill: CREAM, opacity: 0.65 }));
+  // the small A-frame chalkboard, standing in front to the right of the truck
+  el('path', { d: 'M1690 790L1712 560M1800 790L1778 560', fill: 'none', stroke: WOOD, 'stroke-width': 8, 'stroke-linecap': 'round' });
+  el('path', { d: 'M1714 556H1776L1790 706H1700Z', fill: '#2C2C3E', stroke: WOOD, 'stroke-width': 7, 'stroke-linejoin': 'round' });
+  el('text', { x: 1745, y: 598, 'text-anchor': 'middle', 'font-family': 'Kaushan Script, Brush Script MT, cursive', 'font-size': 22, fill: CREAM }).textContent = "Colao'";
+  [[1720, 616, 50], [1718, 632, 56], [1716, 648, 44], [1714, 666, 60], [1712, 682, 48]]
+    .forEach(([x, y, w]) => el('rect', { x, y, width: w, height: 4, rx: 2, fill: CREAM, opacity: 0.65 }));
 
   // right edge: white fence wrapped in pothos
   function vine(x, y1, y2, swing) {
@@ -251,13 +253,23 @@
   const exL = g(svg);
   P = exL;
   // bushes behind the fence hide the salón
-  for (let x = -480; x < 1340; x += 34) {
-    el('circle', { cx: x, cy: 640 + r(-34, 10), r: r(38, 62), fill: [G1, G2, G3][Math.floor(r(0, 3))] });
+  // the neighbour's house, with a low wall of decorative concrete blocks in front
+  el('rect', { x: -1300, y: 548, width: 1440, height: 202, fill: '#F3E6CC', ...line });
+  el('rect', { x: -1312, y: 534, width: 1464, height: 18, fill: '#E2D3B4', ...line, 'stroke-width': 3 });
+  [-1150, -820, -490, -170].forEach((x) => {
+    el('rect', { x, y: 572, width: 120, height: 70, fill: '#CFEAFB', stroke: INK, 'stroke-width': 3 });
+    for (let k = 1; k < 3; k++) el('line', { x1: x, y1: 572 + k * 23, x2: x + 120, y2: 572 + k * 23, stroke: INK, 'stroke-width': 2 });
+  });
+  el('rect', { x: -1200, y: 660, width: 1340, height: 90, fill: '#EADFC8', ...line });
+  for (let x = -1180; x < 130; x += 44) for (let y = 672; y < 740; y += 36)
+    el('circle', { cx: x + 18, cy: y + 14, r: 12, fill: '#D6C7A6', stroke: INK, 'stroke-width': 2 });
+  for (let x = 170; x < 1340; x += 34) {
+    el('circle', { cx: x, cy: 610 + r(-40, 10), r: r(44, 70), fill: [G1, G2, G3][Math.floor(r(0, 3))] });
   }
-  const FL = -500, FR = 1215; // fence from the left edge up to the entrance
+  const FL = 150, FR = 1215; // fence from the left edge up to the entrance
   el('rect', { x: FL, y: 578, width: FR - FL, height: 10, fill: '#FFFFFF', ...line, 'stroke-width': 2.5 });
   const pillars = [];
-  for (let x = -460; x < FR - 60; x += 250) pillars.push(x);
+  for (let x = FL; x < FR - 60; x += 250) pillars.push(x);
   for (let x = FL + 10; x < FR; x += 24) {
     if (pillars.some((p) => x > p - 8 && x < p + 50)) continue;
     el('rect', { x, y: 586, width: 7, height: 118, fill: '#FFFFFF', stroke: INK, 'stroke-width': 2 });
@@ -275,9 +287,9 @@
     el('text', { x: x + w / 2, y: y + h / 2 + size * 0.34, 'text-anchor': 'middle', 'font-family': 'Kaushan Script, Brush Script MT, cursive', 'font-size': size, fill: DEEP }, b).textContent = text;
     sway(b, r(0.8, 1.4), '50% 0%', r(1.8, 2.6));
   }
-  banner(-160, 604, 180, 80, 'Frappés', 40);
-  banner(320, 606, 190, 78, 'Sándwiches', 33);
-  banner(846, 604, 178, 82, 'Café', 46);
+  banner(208, 604, 180, 80, 'Frappés', 40);
+  banner(452, 606, 186, 78, 'Sándwiches', 32);
+  banner(966, 604, 178, 82, 'Café', 46);
 
   // sidewalk and street
   el('rect', { x: -3000, y: 748, width: 7000, height: 64, fill: '#E7E1D2' });
@@ -350,7 +362,7 @@
     el('path', { d: `M${x - 22} 808 L${x} 790 L${x + 22} 808`, fill: 'none', stroke: INK, 'stroke-width': 3 }, b);
     el('ellipse', { cx: x, cy: 768, rx: 40, ry: 8, fill: '#FFFFFF', stroke: INK, 'stroke-width': 3 }, b);
   }
-  bistro(960); bistro(1900);
+  bistro(1060); bistro(1900);
 
   // cars on Calle Main Este
   function car(color, dir, laneY, scale, dur, delay, kind) {
