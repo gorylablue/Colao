@@ -236,36 +236,36 @@
   .salsas span { background: var(--cream); color: var(--indigo-ink); font-weight: 700; font-size: 14px; padding: 6px 12px; border-radius: 999px; }
   .menu-foot { margin: 16px 0 0; font-size: 13px; color: var(--indigo-ink); opacity: .7; }
 
-  /* ---------- About ---------- */
-  .about { padding-block: 90px; }
-  .about-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 24px 56px; align-items: end; }
-  .about-copy { display: grid; gap: 18px; min-width: 0; }
-  .about-copy > p { margin: 0; font-size: 19px; line-height: 1.55; max-width: 32em; }
-  .about-side { min-width: 0; }
-  .quotes { display: grid; gap: 14px; }
-  .quote { margin: 0; padding: 16px 20px; border-left: 5px solid var(--indigo); background: color-mix(in srgb, var(--cream) 60%, transparent); border-radius: 0 16px 16px 0; }
-  .quote p { margin: 0; font-weight: 700; font-size: 18px; color: var(--indigo-ink); }
-  .quote cite { display: block; margin-top: 4px; font-style: normal; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--indigo); }
-
-  /* The place, illustrated: the camera walks from the street into the terrace as you scroll */
-  .place {
-    position: relative; margin: 44px auto 0; aspect-ratio: 16 / 9; width: min(100%, calc((100vh - 120px) * 16 / 9)); max-width: 100%;
-    border-radius: 28px; overflow: hidden; background: var(--sky);
-    border: 5px solid var(--indigo); box-shadow: 10px 10px 0 var(--indigo);
+  /* ---------- About: the place, full screen, walked through with the scroll ---------- */
+  .about { padding-block: 0 84px; }
+  .place { position: relative; width: 100%; height: 100vh; height: 100svh; overflow: hidden; background: var(--sky); }
+  .place > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .place-copy { position: absolute; left: 0; right: 0; top: 0; padding-top: clamp(28px, 7vh, 80px); pointer-events: none; }
+  .place-copy .wrap { display: grid; gap: 16px; justify-items: start; }
+  .place-copy .sec-title { max-width: 9.5em; }
+  .place-copy p { margin: 0; max-width: 24em; font-size: clamp(16px, 1.45vw, 19px); line-height: 1.5; font-weight: 600; color: var(--indigo-ink); }
+  .place-ui {
+    position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    padding-block: 0 calc(18px + env(safe-area-inset-bottom, 0px));
+    padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: 96px;
   }
-  .place > svg { display: block; width: 100%; height: 100%; }
   .place-chip {
-    position: absolute; left: 16px; top: 16px; display: inline-flex; align-items: center; gap: 6px;
+    display: inline-flex; align-items: center; gap: 6px;
     padding: 8px 14px 8px 10px; border-radius: 999px; background: var(--cream); color: var(--indigo);
     border: 3px solid var(--indigo); font-weight: 800; font-size: 14px;
   }
   .place-chip svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; }
   .place-hint {
-    position: absolute; left: 16px; bottom: 16px; padding: 8px 14px; border-radius: 999px;
-    background: var(--indigo); color: var(--cream); font-weight: 800; font-size: 13px;
+    padding: 9px 14px; border-radius: 999px; background: var(--indigo); color: var(--cream); font-weight: 800; font-size: 13px;
     transition: opacity .4s ease, transform .4s ease;
   }
   .place-hint.gone { opacity: 0; transform: translateY(8px); }
+  .about-after { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 32px 56px; align-items: start; padding-top: 64px; }
+  .about-more { margin: 0; font-size: clamp(20px, 2vw, 26px); line-height: 1.45; font-weight: 700; color: var(--indigo-ink); max-width: 22em; }
+  .quotes { display: grid; gap: 14px; }
+  .quote { margin: 0; padding: 16px 20px; border-left: 5px solid var(--indigo); background: color-mix(in srgb, var(--cream) 60%, transparent); border-radius: 0 16px 16px 0; }
+  .quote p { margin: 0; font-weight: 700; font-size: 18px; color: var(--indigo-ink); }
+  .quote cite { display: block; margin-top: 4px; font-style: normal; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--indigo); }
 
   /* ---------- Gallery ---------- */
   .gallery-sec { background: var(--indigo); padding-block: 84px; color: var(--cream); }
@@ -340,8 +340,9 @@
   .cup-meter:focus-visible { outline: 3px solid var(--indigo); outline-offset: 3px; }
 
   @media (max-width: 700px) {
-    .menu, .about, .gallery-sec { padding-block: 60px; }
-    .place { width: 100%; aspect-ratio: 4 / 5; margin-top: 32px; border-radius: 22px; box-shadow: 6px 6px 0 var(--indigo); }
+    .menu, .gallery-sec { padding-block: 60px; }
+    .about { padding-block: 0 60px; }
+    .about-after { grid-template-columns: minmax(0, 1fr); padding-top: 44px; }
     .visit { padding-block: 60px 100px; }
     .favs { grid-auto-columns: 72%; margin-left: calc(-1 * max(20px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(20px, env(safe-area-inset-right, 0px))); padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); scroll-padding-left: max(20px, env(safe-area-inset-left, 0px)); }
     .cat-btn { grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; }
@@ -715,28 +716,28 @@
 </section>
 
 <section class="about" id="nosotros" aria-labelledby="about-title">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="about-copy">
-      <div class="eyebrow"><i></i><span data-en="Since 2019">Desde 2019</span></div>
-      <h2 class="sec-title split" id="about-title" data-en="Seven years brewing in Ponce">Siete años colando en Ponce</h2>
-      <p data-en="Colao&#x27; opened in 2019 in Jardines del Caribe with a simple idea: well-made specialty coffee, breakfast at any hour and a terrace full of plants where you&#x27;ll want to stay a while.">Colao' abrió en 2019 en Jardines del Caribe con una idea sencilla: café de especialidad bien hecho, desayuno a cualquier hora y una terraza llena de plantas donde dan ganas de quedarse.</p>
-      <p data-en="Seven years later, nothing changed. Latte art in every cup, house-made sauces and a bar that knows its regulars by name.">Hoy seguimos igual. Latte art en cada taza, salsas hechas en casa y una barra que conoce a sus clientes por nombre.</p>
-    </div>
-    <div class="about-side">
-      <div class="quotes">
-        <blockquote class="quote"><p><span data-en="“Colao&#x27; in Ponce is for the coffee freaks.”">“Colao' en Ponce es pa' los café freaks.”</span></p><cite>La Mafia PR</cite></blockquote>
-        <blockquote class="quote"><p><span data-en="“It stands out for its sandwiches and wraps, served with house-made sauces.”">“Se destaca por sus sándwiches y wraps que acompañan con salsas caseras.”</span></p><cite>Platea PR</cite></blockquote>
+  <div class="place" id="placeFig">
+    <svg id="place" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img"
+      aria-label="Ilustración animada de Colao': desde la Calle Main Este se ve el árbol grande y la verja; al cruzar la entrada aparece el foodtruck de frente, con el salón a la izquierda y la pizarra a la derecha."
+      data-en-label="Animated illustration of Colao': from Calle Main Este you see the big tree and the fence; through the entrance the food truck faces you, with the dining area on the left and the chalkboard on the right."></svg>
+    <div class="place-copy" id="placeCopy">
+      <div class="wrap">
+        <div class="eyebrow"><i></i><span data-en="Since 2019">Desde 2019</span></div>
+        <h2 class="sec-title split" id="about-title" data-en="Seven years brewing in Ponce">Siete años colando en Ponce</h2>
+        <p data-en="Colao&#x27; opened in 2019 in Jardines del Caribe with a simple idea: well-made specialty coffee, breakfast at any hour and a terrace full of plants where you&#x27;ll want to stay a while.">Colao' abrió en 2019 en Jardines del Caribe con una idea sencilla: café de especialidad bien hecho, desayuno a cualquier hora y una terraza llena de plantas donde dan ganas de quedarse.</p>
       </div>
     </div>
-    </div>
-    <figure class="place" id="placeFig">
-      <svg id="place" viewBox="0 0 1500 750" preserveAspectRatio="xMidYMid slice" role="img"
-        aria-label="Ilustración animada de Colao': la Calle Main Este con su árbol grande, la entrada, el foodtruck y la terraza con plantas colgantes."
-        data-en-label="Animated illustration of Colao': Calle Main Este with its big tree, the entrance, the food truck and the terrace full of hanging plants."></svg>
-      <figcaption class="place-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.6"/></svg><span id="placeLabel">Calle Main Este, Ponce</span></figcaption>
+    <div class="place-ui">
+      <span class="place-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.6"/></svg><span id="placeLabel">Calle Main Este, Ponce</span></span>
       <span class="place-hint" data-en="Keep scrolling to walk in ↓">Sigue bajando para entrar ↓</span>
-    </figure>
+    </div>
+  </div>
+  <div class="wrap about-after">
+    <p class="about-more" data-en="Seven years later, nothing changed. Latte art in every cup, house-made sauces and a bar that knows its regulars by name.">Hoy seguimos igual. Latte art en cada taza, salsas hechas en casa y una barra que conoce a sus clientes por nombre.</p>
+    <div class="quotes">
+      <blockquote class="quote"><p><span data-en="“Colao&#x27; in Ponce is for the coffee freaks.”">“Colao' en Ponce es pa' los café freaks.”</span></p><cite>La Mafia PR</cite></blockquote>
+      <blockquote class="quote"><p><span data-en="“It stands out for its sandwiches and wraps, served with house-made sauces.”">“Se destaca por sus sándwiches y wraps que acompañan con salsas caseras.”</span></p><cite>Platea PR</cite></blockquote>
+    </div>
   </div>
 </section>
 
