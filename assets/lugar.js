@@ -254,7 +254,7 @@
   for (let x = -480; x < 1340; x += 34) {
     el('circle', { cx: x, cy: 640 + r(-34, 10), r: r(38, 62), fill: [G1, G2, G3][Math.floor(r(0, 3))] });
   }
-  const FL = -500, FR = 1330; // fence from the left edge up to the entrance
+  const FL = -500, FR = 1080; // fence from the left edge up to the entrance
   el('rect', { x: FL, y: 578, width: FR - FL, height: 10, fill: '#FFFFFF', ...line, 'stroke-width': 2.5 });
   const pillars = [];
   for (let x = -460; x < FR - 60; x += 250) pillars.push(x);
@@ -277,7 +277,7 @@
   }
   banner(-160, 604, 180, 80, 'Frappés', 40);
   banner(320, 606, 190, 78, 'Sándwiches', 33);
-  banner(1070, 604, 178, 82, 'Café', 46);
+  banner(846, 604, 178, 82, 'Café', 46);
 
   // sidewalk and street
   el('rect', { x: -3000, y: 748, width: 7000, height: 64, fill: '#E7E1D2' });
@@ -288,23 +288,24 @@
   for (let x = -2980; x < 4000; x += 96) el('rect', { x, y: 912, width: 50, height: 7, rx: 3, fill: CREAM, opacity: 0.8 });
 
   // the entrance: two white columns with the 107, then a lower wall covered in pothos
-  const EX = 1460; // middle of the entrance — the truck sits right behind it
-  [[FR, 1400], [1520, 1590]].forEach(([a, b]) => {
+  // the entrance is as wide as the truck: looking in from the street, truck and chalkboard fill it
+  const EX = 1505;
+  [[FR, 1150], [1860, 1930]].forEach(([a, b]) => {
     el('rect', { x: a, y: 330, width: b - a, height: 420, fill: '#F7F7F2', ...line });
     el('rect', { x: a - 10, y: 316, width: b - a + 20, height: 20, fill: '#FFFFFF', ...line, 'stroke-width': 3 });
   });
-  el('rect', { x: 1338, y: 470, width: 54, height: 34, rx: 4, fill: INK });
-  el('text', { x: 1365, y: 495, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 19, fill: CREAM }).textContent = '107';
-  vine(1575, 336, 740, true);
-  el('rect', { x: 1590, y: 600, width: 900, height: 150, fill: '#F7F7F2', ...line });
-  for (let x = 1600; x < 2480; x += 24) el('rect', { x, y: 560, width: 7, height: 44, fill: '#FFFFFF', stroke: INK, 'stroke-width': 2 });
-  el('rect', { x: 1590, y: 556, width: 900, height: 8, fill: '#FFFFFF', stroke: INK, 'stroke-width': 2 });
-  for (let x = 1620; x < 2480; x += 70) vine(x, 564, 740, false);
+  el('rect', { x: 1088, y: 470, width: 54, height: 34, rx: 4, fill: INK });
+  el('text', { x: 1115, y: 495, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 19, fill: CREAM }).textContent = '107';
+  vine(1915, 336, 740, true);
+  el('rect', { x: 1930, y: 600, width: 900, height: 150, fill: '#F7F7F2', ...line });
+  for (let x = 1940; x < 2820; x += 24) el('rect', { x, y: 560, width: 7, height: 44, fill: '#FFFFFF', stroke: INK, 'stroke-width': 2 });
+  el('rect', { x: 1930, y: 556, width: 900, height: 8, fill: '#FFFFFF', stroke: INK, 'stroke-width': 2 });
+  for (let x = 1960; x < 2820; x += 70) vine(x, 564, 740, false);
 
   // street sign
-  el('rect', { x: 1240, y: 430, width: 10, height: 330, fill: '#9AA0B5', stroke: INK, 'stroke-width': 2 });
-  el('rect', { x: 1136, y: 404, width: 216, height: 42, rx: 6, fill: INK, stroke: DEEP, 'stroke-width': 3 });
-  el('text', { x: 1244, y: 432, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 17, fill: CREAM }).textContent = 'C. MAIN ESTE';
+  el('rect', { x: 1030, y: 430, width: 10, height: 330, fill: '#9AA0B5', stroke: INK, 'stroke-width': 2 });
+  el('rect', { x: 926, y: 404, width: 216, height: 42, rx: 6, fill: INK, stroke: DEEP, 'stroke-width': 3 });
+  el('text', { x: 1034, y: 432, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 17, fill: CREAM }).textContent = 'C. MAIN ESTE';
 
   // the big tree, in front of the fence
   el('ellipse', { cx: 700, cy: 790, rx: 460, ry: 22, fill: DEEP, opacity: 0.16 });
@@ -344,7 +345,7 @@
     el('path', { d: `M${x - 22} 808 L${x} 790 L${x + 22} 808`, fill: 'none', stroke: INK, 'stroke-width': 3 }, b);
     el('ellipse', { cx: x, cy: 768, rx: 40, ry: 8, fill: '#FFFFFF', stroke: INK, 'stroke-width': 3 }, b);
   }
-  bistro(150); bistro(960);
+  bistro(150); bistro(1400);
 
   // cars on Calle Main Este
   function car(color, dir, laneY, scale, dur, delay, kind) {
@@ -408,10 +409,10 @@
   const labelEl = document.getElementById('placeLabel');
   const hint = stage.querySelector('.place-hint');
   const tl = gsap.timeline({ paused: true, onUpdate: render, defaults: { ease: 'sine.inOut' } });
-  tl.to(cam, { x: 1100, y: tall ? 420 : 560, z: 0.2, duration: 0.28 })   // walk along the fence towards the entrance
+  tl.to(cam, { x: 1300, y: tall ? 420 : 560, z: 0.2, duration: 0.28 })   // walk along the fence towards the entrance
     .to(cam, { x: EX, y: 560, z: 0.95, duration: 0.22, ease: 'power1.in' }) // walk through the entrance
     .to(cam, { ex: 0, duration: 0.05, ease: 'none' }, '-=0.05')
-    .to(cam, { x: 1430, y: tall ? 640 : 560, z: 0.8, k: tall ? 1.25 : 1, duration: 0.14, ease: 'power1.out' }) // the truck faces you, board on the right
+    .to(cam, { x: 1505, y: tall ? 640 : 560, z: 0.8, k: tall ? 1.25 : 1, duration: 0.14, ease: 'power1.out' }) // the truck faces you, board on the right
     .to(cam, { x: tall ? 560 : 600, y: tall ? 760 : 600, duration: 0.2 })                // look left: the salón
     .to(cam, { x: 1060, y: tall ? 720 : 580, z: 0.66, k: 1, duration: 0.16 });   // step back: everything together
   if (copy) tl.to(copy, { opacity: 0, y: -40, duration: 0.12, ease: 'power1.in' }, 0.02);
