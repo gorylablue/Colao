@@ -192,10 +192,10 @@
   el('text', { x: 1400, y: 380, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 30, fill: INK }, truck).textContent = "COLAO'";
 
   // the small A-frame chalkboard, standing in front to the right of the truck
-  el('path', { d: 'M1690 790L1712 560M1800 790L1778 560', fill: 'none', stroke: WOOD, 'stroke-width': 8, 'stroke-linecap': 'round' });
-  el('path', { d: 'M1714 556H1776L1790 706H1700Z', fill: '#2C2C3E', stroke: WOOD, 'stroke-width': 7, 'stroke-linejoin': 'round' });
-  el('text', { x: 1745, y: 598, 'text-anchor': 'middle', 'font-family': 'Kaushan Script, Brush Script MT, cursive', 'font-size': 22, fill: CREAM }).textContent = "Colao'";
-  [[1720, 616, 50], [1718, 632, 56], [1716, 648, 44], [1714, 666, 60], [1712, 682, 48]]
+  el('path', { d: 'M1560 800L1582 570M1670 800L1648 570', fill: 'none', stroke: WOOD, 'stroke-width': 8, 'stroke-linecap': 'round' });
+  el('path', { d: 'M1584 566H1646L1660 716H1570Z', fill: '#2C2C3E', stroke: WOOD, 'stroke-width': 7, 'stroke-linejoin': 'round' });
+  el('text', { x: 1615, y: 608, 'text-anchor': 'middle', 'font-family': 'Kaushan Script, Brush Script MT, cursive', 'font-size': 22, fill: CREAM }).textContent = "Colao'";
+  [[1590, 626, 50], [1588, 642, 56], [1586, 658, 44], [1584, 676, 60], [1582, 692, 48]]
     .forEach(([x, y, w]) => el('rect', { x, y, width: w, height: 4, rx: 2, fill: CREAM, opacity: 0.65 }));
 
   // right edge: white fence wrapped in pothos
@@ -253,20 +253,21 @@
   const exL = g(svg);
   P = exL;
   // bushes behind the fence hide the salón
-  // the neighbour's house, with a low wall of decorative concrete blocks in front
-  el('rect', { x: -1300, y: 548, width: 1440, height: 202, fill: '#F3E6CC', ...line });
-  el('rect', { x: -1312, y: 534, width: 1464, height: 18, fill: '#E2D3B4', ...line, 'stroke-width': 3 });
-  [-1150, -820, -490, -170].forEach((x) => {
-    el('rect', { x, y: 572, width: 120, height: 70, fill: '#CFEAFB', stroke: INK, 'stroke-width': 3 });
-    for (let k = 1; k < 3; k++) el('line', { x1: x, y1: 572 + k * 23, x2: x + 120, y2: 572 + k * 23, stroke: INK, 'stroke-width': 2 });
-  });
-  el('rect', { x: -1200, y: 660, width: 1340, height: 90, fill: '#EADFC8', ...line });
-  for (let x = -1180; x < 130; x += 44) for (let y = 672; y < 740; y += 36)
-    el('circle', { cx: x + 18, cy: y + 14, r: 12, fill: '#D6C7A6', stroke: INK, 'stroke-width': 2 });
-  for (let x = 170; x < 1340; x += 34) {
+  // left of the fence: an open parking lot
+  el('rect', { x: -2400, y: 690, width: 2220, height: 60, fill: '#6A6E88' });
+  for (let x = -2300; x < -220; x += 160) el('line', { x1: x, y1: 694, x2: x + 30, y2: 748, stroke: CREAM, 'stroke-width': 4, opacity: 0.8 });
+  function parked(x, color) {
+    const c = g(P, { transform: `translate(${x} 712) scale(0.62)` });
+    el('path', { d: 'M0-30Q0-52 22-56L60-60Q78-92 110-94L170-94Q196-92 214-60L252-56Q274-52 274-30L274-14Q274-6 266-6L8-6Q0-6 0-14Z', fill: color, stroke: INK, 'stroke-width': 5 }, c);
+    el('path', { d: 'M76-60Q92-86 114-86H140V-60ZM150-86H168Q188-86 204-60H150Z', fill: '#CFEAFB', stroke: INK, 'stroke-width': 4 }, c);
+    [62, 214].forEach((wx) => el('circle', { cx: wx, cy: -6, r: 23, fill: DEEP, stroke: INK, 'stroke-width': 4 }, c));
+  }
+  parked(-1500, '#F4F4F0'); parked(-1080, '#8E5CD9'); parked(-620, '#53B060');
+  palm(-1250, 700, 330, 1);
+  for (let x = -180; x < 1260; x += 34) {
     el('circle', { cx: x, cy: 610 + r(-40, 10), r: r(44, 70), fill: [G1, G2, G3][Math.floor(r(0, 3))] });
   }
-  const FL = 150, FR = 1215; // fence from the left edge up to the entrance
+  const FL = -200, FR = 1180; // fence from the left edge up to the entrance
   el('rect', { x: FL, y: 578, width: FR - FL, height: 10, fill: '#FFFFFF', ...line, 'stroke-width': 2.5 });
   const pillars = [];
   for (let x = FL; x < FR - 60; x += 250) pillars.push(x);
@@ -287,9 +288,9 @@
     el('text', { x: x + w / 2, y: y + h / 2 + size * 0.34, 'text-anchor': 'middle', 'font-family': 'Kaushan Script, Brush Script MT, cursive', 'font-size': size, fill: DEEP }, b).textContent = text;
     sway(b, r(0.8, 1.4), '50% 0%', r(1.8, 2.6));
   }
-  banner(208, 604, 180, 80, 'Frappés', 40);
-  banner(452, 606, 186, 78, 'Sándwiches', 32);
-  banner(966, 604, 178, 82, 'Café', 46);
+  banner(-140, 604, 180, 80, 'Frappés', 40);
+  banner(108, 606, 186, 78, 'Sándwiches', 32);
+  banner(858, 604, 178, 82, 'Café', 46);
 
   // sidewalk and street
   el('rect', { x: -3000, y: 748, width: 7000, height: 64, fill: '#E7E1D2' });
@@ -301,23 +302,23 @@
 
   // the entrance: two white columns with the 107, then a lower wall covered in pothos
   // the entrance is as wide as the truck: looking in from the street, truck and chalkboard fill it
-  const EX = 1477;
-  [[FR, 1285], [1670, 1740]].forEach(([a, b]) => {
+  const EX = 1400;
+  [[FR, 1250], [1550, 1620]].forEach(([a, b]) => {
     el('rect', { x: a, y: 330, width: b - a, height: 420, fill: '#F7F7F2', ...line });
     el('rect', { x: a - 10, y: 316, width: b - a + 20, height: 20, fill: '#FFFFFF', ...line, 'stroke-width': 3 });
   });
-  el('rect', { x: 1223, y: 470, width: 54, height: 34, rx: 4, fill: INK });
-  el('text', { x: 1250, y: 495, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 19, fill: CREAM }).textContent = '107';
-  vine(1725, 336, 740, true);
+  el('rect', { x: 1188, y: 470, width: 54, height: 34, rx: 4, fill: INK });
+  el('text', { x: 1215, y: 495, 'text-anchor': 'middle', 'font-family': 'Rubik Mono One, Arial Black, sans-serif', 'font-size': 19, fill: CREAM }).textContent = '107';
+  vine(1605, 336, 740, true);
   // the fence starts again on the other side of the entrance, wrapped in pothos
-  for (let x = 1750; x < 3000; x += 24) el('rect', { x, y: 586, width: 7, height: 118, fill: '#FFFFFF', stroke: INK, 'stroke-width': 2 });
-  el('rect', { x: 1740, y: 578, width: 1260, height: 10, fill: '#FFFFFF', ...line, 'stroke-width': 2.5 });
-  el('rect', { x: 1740, y: 700, width: 1260, height: 50, fill: '#F7F7F2', ...line });
+  for (let x = 1630; x < 3000; x += 24) el('rect', { x, y: 586, width: 7, height: 118, fill: '#FFFFFF', stroke: INK, 'stroke-width': 2 });
+  el('rect', { x: 1620, y: 578, width: 1380, height: 10, fill: '#FFFFFF', ...line, 'stroke-width': 2.5 });
+  el('rect', { x: 1620, y: 700, width: 1380, height: 50, fill: '#F7F7F2', ...line });
   [1990, 2240, 2490, 2740].forEach((x) => {
     el('rect', { x, y: 548, width: 46, height: 202, fill: '#F7F7F2', ...line });
     el('rect', { x: x - 6, y: 536, width: 58, height: 16, fill: '#FFFFFF', ...line, 'stroke-width': 3 });
   });
-  for (let x = 1780; x < 3000; x += 60) vine(x, 588, 740, false);
+  for (let x = 1660; x < 3000; x += 60) vine(x, 588, 740, false);
 
   // street sign
   el('rect', { x: 1830, y: 430, width: 10, height: 330, fill: '#9AA0B5', stroke: INK, 'stroke-width': 2 });
@@ -429,7 +430,7 @@
   tl.to(cam, { x: 1300, y: tall ? 420 : 560, z: 0.2, duration: 0.28 })   // walk along the fence towards the entrance
     .to(cam, { x: EX, y: 560, z: 0.95, duration: 0.22, ease: 'power1.in' }) // walk through the entrance
     .to(cam, { ex: 0, duration: 0.05, ease: 'none' }, '-=0.05')
-    .to(cam, { x: 1480, y: tall ? 600 : 560, z: 0.8, k: tall ? 0.95 : 1, duration: 0.14, ease: 'power1.out' }); // ends facing the truck, board on the right
+    .to(cam, { x: 1420, y: tall ? 600 : 560, z: 0.8, k: tall ? 0.95 : 1, duration: 0.14, ease: 'power1.out' }); // ends facing the truck, board on the right
   if (copy) tl.to(copy, { opacity: 0, y: -40, duration: 0.12, ease: 'power1.in' }, 0.02);
   const stops = [
     [0, 'Calle Main Este, Ponce', 'Calle Main Este, Ponce'],
