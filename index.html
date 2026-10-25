@@ -816,7 +816,7 @@
     <small>© 2026 Colao' Espresso Bar · Ponce, Puerto Rico</small>
   </div>
 </footer>
-<p class="proto-note"><span data-en="Prototype · proposal by En el Mapa">Prototipo · propuesta de En el Mapa</span></p>
+<p class="proto-note"><span data-en="Prototype by">Prototipo de</span> <a href="https://enelmapapr.netlify.app" target="_blank" rel="noopener">En El Mapa</a></p>
 
 <button class="cup-meter" id="cupMeter" type="button" aria-label="Volver arriba" data-en-label="Back to top">
   <span class="cup-bubble"><span data-en="Coffee’s ready!">¡Café listo!</span></span>
@@ -1198,5 +1198,13 @@
   window.__colaoTl = tl;
 })();
 </script>
+<!-- En El Mapa: formulario oculto para las estadísticas del aviso (Netlify lo registra al publicar) -->
+<form name="enelmapa-estadisticas" data-netlify="true" netlify-honeypot="bot-field" hidden style="display:none" aria-hidden="true">
+  <input name="visita"><input name="visitante"><input name="nuevo"><input name="sitio"><input name="aparato">
+  <input name="vio"><input name="cerro"><input name="llamar"><input name="instagram"><input name="otra_propuesta"><input name="segundos">
+  <input name="bot-field">
+</form>
+<!-- En El Mapa: aviso de propuesta -->
+<script src="enelmapa-aviso.js" defer data-estadisticas="netlify" data-sitio="colao"></script>
 </body>
 </html>
