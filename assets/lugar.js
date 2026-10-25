@@ -350,7 +350,7 @@
     el('path', { d: `M${x - 22} 808 L${x} 790 L${x + 22} 808`, fill: 'none', stroke: INK, 'stroke-width': 3 }, b);
     el('ellipse', { cx: x, cy: 768, rx: 40, ry: 8, fill: '#FFFFFF', stroke: INK, 'stroke-width': 3 }, b);
   }
-  bistro(150); bistro(1900);
+  bistro(960); bistro(1900);
 
   // cars on Calle Main Este
   function car(color, dir, laneY, scale, dur, delay, kind) {
@@ -417,16 +417,12 @@
   tl.to(cam, { x: 1300, y: tall ? 420 : 560, z: 0.2, duration: 0.28 })   // walk along the fence towards the entrance
     .to(cam, { x: EX, y: 560, z: 0.95, duration: 0.22, ease: 'power1.in' }) // walk through the entrance
     .to(cam, { ex: 0, duration: 0.05, ease: 'none' }, '-=0.05')
-    .to(cam, { x: 1477, y: tall ? 640 : 560, z: 0.8, k: tall ? 1.25 : 1, duration: 0.14, ease: 'power1.out' }) // the truck faces you, board on the right
-    .to(cam, { x: tall ? 560 : 600, y: tall ? 760 : 600, duration: 0.2 })                // look left: the salón
-    .to(cam, { x: 1060, y: tall ? 720 : 580, z: 0.66, k: 1, duration: 0.16 });   // step back: everything together
+    .to(cam, { x: 1480, y: tall ? 600 : 560, z: 0.8, k: tall ? 0.95 : 1, duration: 0.14, ease: 'power1.out' }); // ends facing the truck, board on the right
   if (copy) tl.to(copy, { opacity: 0, y: -40, duration: 0.12, ease: 'power1.in' }, 0.02);
   const stops = [
     [0, 'Calle Main Este, Ponce', 'Calle Main Este, Ponce'],
-    [0.26, 'La entrada', 'The entrance'],
-    [0.5, 'El foodtruck', 'The food truck'],
-    [0.68, 'El salón', 'The dining area'],
-    [0.88, "Bienvenido a Colao'", "Welcome to Colao'"],
+    [0.4, 'La entrada', 'The entrance'],
+    [0.8, "Bienvenido a Colao'", "Welcome to Colao'"],
   ];
   let progress = 0;
   function updateLabel() {
@@ -449,9 +445,12 @@
 
   if (window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
+    // iOS Safari resizes the viewport when its address bar hides; don't re-measure mid-scroll
+    ScrollTrigger.config({ ignoreMobileResize: true });
     ScrollTrigger.create({
-      trigger: stage, start: 'top top', end: () => '+=' + Math.round(innerHeight * 3),
-      pin: true, scrub: 1.2, animation: tl, invalidateOnRefresh: true,
+      trigger: stage, start: 'top top', end: () => '+=' + Math.round(innerHeight * 2),
+      // anticipatePin locks the scene a moment early, so the page doesn't overshoot and snap back
+      pin: true, anticipatePin: 1, refreshPriority: 1, scrub: 1, animation: tl, invalidateOnRefresh: true,
       onUpdate: (self) => { progress = self.progress; updateLabel(); },
     });
     ScrollTrigger.create({
