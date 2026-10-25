@@ -243,7 +243,10 @@
   .place-copy { position: absolute; left: 0; right: 0; top: 0; padding-top: clamp(28px, 7vh, 80px); pointer-events: none; }
   .place-copy .wrap { display: grid; gap: 16px; justify-items: start; }
   .place-copy .sec-title { max-width: 9.5em; }
-  .place-copy p { margin: 0; max-width: 24em; font-size: clamp(16px, 1.45vw, 19px); line-height: 1.5; font-weight: 600; color: var(--indigo-ink); }
+  .place-copy p {
+    margin: 0; max-width: 24em; font-size: clamp(16px, 1.45vw, 19px); line-height: 1.5; font-weight: 600; color: var(--indigo-ink);
+    padding: 14px 18px; border-radius: 18px; background: var(--cream); border: 3px solid var(--indigo); box-shadow: 5px 5px 0 var(--indigo);
+  }
   .place-ui {
     position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
     padding-block: 0 calc(18px + env(safe-area-inset-bottom, 0px));
