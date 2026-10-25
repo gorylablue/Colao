@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Colao' Espresso Bar</title>
+<meta name="description" content="Café de especialidad y desayuno todo el día en Ponce, Puerto Rico. Desde 2019.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap">
+<style>
+  /* Layout: brand-blue hero split in two — copy + wordmark left, an animated stage right where the mascot dives into a cup. */
+  :root {
+    --sky: #A9D9F6;
+    --sky-deep: #8FC9EF;
+    --indigo: #2A1FB8;
+    --indigo-ink: #1A1373;
+    --cream: #F2F6D8;
+    --coffee: #4E2814;
+    --crema: #B5733C;
+    --font-display: "Rubik Mono One", "Arial Black", Impact, sans-serif;
+    --font-body: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--sky);
+    color: var(--indigo-ink);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    max-width: 1280px; margin: 0 auto;
+    padding-block: 18px;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand svg { width: 44px; height: 44px; }
+  .brand span { font-family: var(--font-display); font-size: 18px; color: var(--indigo); letter-spacing: .02em; }
+  .nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-weight: 600; }
+  .nav ul a { text-decoration: none; color: var(--indigo); }
+  .nav ul a:hover, .nav ul a:focus-visible { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 700 16px/1 var(--font-body);
+    padding: 14px 22px; border-radius: 999px; text-decoration: none; cursor: pointer;
+    border: 3px solid var(--indigo);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-solid { background: var(--indigo); color: var(--cream); box-shadow: 0 5px 0 var(--indigo-ink); }
+  .btn-ghost { background: transparent; color: var(--indigo); box-shadow: 0 5px 0 var(--indigo); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--indigo-ink); }
+  .btn:focus-visible, .replay:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center; gap: 12px;
+    max-width: 1280px; margin: 0 auto;
+    padding-block: 8px 0;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .copy { display: grid; gap: 22px; min-width: 0; padding-bottom: 56px; position: relative; z-index: 2; }
+  .eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 800; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--indigo);
+  }
+  .eyebrow i { flex: 0 0 48px; height: 3px; background: var(--indigo); border-radius: 2px; }
+  .wordmark {
+    margin: 0;
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(58px, 8.4vw, 124px); line-height: .95; letter-spacing: -.01em;
+    color: var(--cream);
+    -webkit-text-stroke: .075em var(--indigo);
+    paint-order: stroke fill;
+    text-shadow: .015em .05em 0 var(--indigo), .03em .1em 0 var(--indigo), .04em .13em 0 var(--indigo);
+    white-space: nowrap;
+  }
+  .wordmark .ch { display: inline-block; }
+  .wordmark .apos { display: inline-block; transform-origin: 50% 90%; }
+  .estd {
+    display: flex; align-items: center; gap: 14px; max-width: 26em;
+    font-weight: 800; font-size: 15px; letter-spacing: .08em; color: var(--indigo);
+  }
+  .estd i { flex: 1; height: 3px; background: var(--indigo); border-radius: 2px; }
+  .lede { margin: 0; font-size: clamp(19px, 1.7vw, 23px); line-height: 1.4; max-width: 25em; text-wrap: balance; font-weight: 600; color: var(--indigo-ink); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 10px; font-size: 14px; font-weight: 600; }
+  .facts span {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 13px; border-radius: 999px;
+    background: color-mix(in srgb, var(--cream) 70%, transparent); color: var(--indigo-ink);
+  }
+  .facts b { color: var(--indigo); }
+
+  .stage-wrap { position: relative; min-width: 0; z-index: 1; }
+  #stage { display: block; width: 100%; height: auto; overflow: visible; cursor: pointer; clip-path: inset(-400px 0 0 0); }
+  /* the counter keeps going past the stage, under the copy and to the right edge */
+  .stage-wrap::before {
+    content: ""; position: absolute; bottom: 0; left: -100vw; right: -100vw; height: 12.571%;
+    background: var(--sky-deep); border-top: 5px solid var(--indigo); z-index: -1;
+  }
+  .replay {
+    position: absolute; right: 8px; bottom: 18px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font: 700 13px/1 var(--font-body); color: var(--indigo);
+    background: var(--cream); border: 2px solid var(--indigo); border-radius: 999px;
+    padding: 8px 12px; cursor: pointer; opacity: .9;
+  }
+  .replay svg { width: 14px; height: 14px; }
+  .fly-drop {
+    position: absolute; left: 0; top: 0; width: 18px; height: 24px; margin: -12px 0 0 -9px;
+    pointer-events: none; z-index: 5; visibility: hidden;
+  }
+
+  /* ---------- Info band ---------- */
+  .band { background: var(--indigo); color: var(--cream); }
+  .band-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px;
+    padding-block: 34px;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .band h2 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 400; font-size: 14px; letter-spacing: .06em; color: var(--sky); }
+  .band p { margin: 0; font-size: 17px; line-height: 1.45; }
+  .band .tnum { font-variant-numeric: tabular-nums; }
+  .proto-note { text-align: center; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--indigo); opacity: .7; padding-block: 14px; }
+
+  @media (max-width: 900px) {
+    .nav ul { display: none; }
+    .hero { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .copy { padding-bottom: 0; padding-top: 8px; }
+    .band-inner { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  }
+  @media (max-width: 420px) {
+    .nav .btn { padding: 11px 16px; font-size: 14px; }
+    .ctas .btn { flex: 1 1 auto; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Static version of the cup mascot, used for the nav mark -->
+    <symbol id="mascot" viewBox="-75 -205 140 175">
+      <circle cx="-50" cy="-92" r="17" fill="none" stroke="#2A1FB8" stroke-width="11"/>
+      <path d="M-46-128H46C46-90 44-58 30-44 18-34-18-34-30-44-44-58-46-90-46-128Z" fill="#2A1FB8"/>
+      <path d="M-50-124C-66-134-54-160-34-152-32-174-6-180 6-164 18-182 50-174 46-150 64-150 62-126 48-122 20-114-24-114-50-124Z" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M14-196C4-186 4-176 14-174 24-176 24-186 14-196Z" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="5" stroke-linejoin="round"/>
+      <circle cx="-10" cy="-96" r="10" fill="#F2F6D8"/><circle cx="20" cy="-100" r="10" fill="#F2F6D8"/>
+      <circle cx="-7" cy="-99" r="4.5" fill="#2A1FB8"/><circle cx="23" cy="-103" r="4.5" fill="#2A1FB8"/>
+      <path d="M0-76Q10-66 22-79" fill="none" stroke="#F2F6D8" stroke-width="4.5" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<nav class="nav" aria-label="Principal">
+  <a class="brand" href="#top" aria-label="Colao' Espresso Bar, inicio">
+    <svg aria-hidden="true"><use href="#mascot"/></svg>
+    <span>COLAO'</span>
+  </a>
+  <ul>
+    <li><a href="#menu">Menú</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#bookclub">Book Club</a></li>
+    <li><a href="#visitanos">Visítanos</a></li>
+  </ul>
+  <a class="btn btn-solid" href="https://www.ubereats.com" target="_blank" rel="noopener">Ordenar</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="copy">
+    <div class="eyebrow"><i></i>Specialty coffee · Ponce, PR</div>
+    <h1 class="wordmark" aria-label="Colao'"><span class="ch">C</span><span class="ch">O</span><span class="ch">L</span><span class="ch">A</span><span class="ch">O</span><span class="apos">'</span></h1>
+    <div class="estd">ESTD. <i></i> 2019</div>
+    <p class="lede">Café de especialidad y desayuno todo el día, colao’ con calma en Jardines del Caribe.</p>
+    <div class="ctas">
+      <a class="btn btn-solid" href="#menu">Ver el menú</a>
+      <a class="btn btn-ghost" href="https://maps.google.com/?q=Colao+Espresso+Bar+Ponce" target="_blank" rel="noopener">Cómo llegar</a>
+    </div>
+    <div class="facts">
+      <span><b>★ 4.8</b> · 117 opiniones en Google</span>
+      <span>Lun–Vie 7:30am–3pm · Sáb 8am–2pm</span>
+    </div>
+  </div>
+
+  <div class="stage-wrap">
+    <svg id="stage" viewBox="0 0 1000 700" role="img" aria-label="El muñequito de Colao' camina, se trepa a una taza de café y se tira de cabeza adentro.">
+      <defs>
+        <clipPath id="aboveSurface"><rect x="-300" y="-500" width="1600" height="845"/></clipPath>
+        <clipPath id="coffeeClip"><ellipse cx="700" cy="334" rx="124" ry="20"/></clipPath>
+      </defs>
+
+      <!-- halo behind the cup -->
+      <circle cx="700" cy="420" r="250" fill="#F2F6D8" opacity=".35"/>
+      <circle cx="700" cy="420" r="180" fill="#F2F6D8" opacity=".35"/>
+
+      <!-- counter -->
+      <ellipse id="charShadow" cx="0" cy="616" rx="40" ry="7" fill="#2A1FB8" opacity=".18"/>
+
+      <!-- saucer -->
+      <ellipse cx="700" cy="606" rx="190" ry="22" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="6"/>
+      <ellipse cx="700" cy="603" rx="120" ry="11" fill="none" stroke="#2A1FB8" stroke-width="3" opacity=".35"/>
+
+      <!-- cup -->
+      <path d="M826 392C915 372 922 512 806 530" fill="none" stroke="#2A1FB8" stroke-width="30" stroke-linecap="round"/>
+      <path d="M826 392C915 372 922 512 806 530" fill="none" stroke="#F2F6D8" stroke-width="15" stroke-linecap="round"/>
+      <path d="M560 330 590 588Q592 602 606 602H794Q808 602 810 588L840 330Z" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="7" stroke-linejoin="round"/>
+      <path d="M816 360 794 570" stroke="#2A1FB8" stroke-width="5" stroke-linecap="round" opacity=".15"/>
+      <text x="700" y="482" text-anchor="middle" font-family="Rubik Mono One, Arial Black, sans-serif" font-size="40" fill="#2A1FB8">COLAO'</text>
+      <text x="700" y="518" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="15" letter-spacing="2" fill="#2A1FB8">ESTD. ——— 2019</text>
+      <ellipse cx="700" cy="330" rx="140" ry="27" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="7"/>
+      <ellipse cx="700" cy="334" rx="124" ry="20" fill="#4E2814"/>
+      <ellipse id="crema" cx="700" cy="335" rx="110" ry="16" fill="#B5733C"/>
+      <path id="heart" d="M700 346C664 336 664 322 686 323 694 323 699 328 700 331 701 328 706 323 714 323 736 322 736 336 700 346Z" fill="#F2F6D8"/>
+      <g id="ripples" clip-path="url(#coffeeClip)"></g>
+
+      <!-- steam -->
+      <g id="steam" fill="none" stroke="#F2F6D8" stroke-width="7" stroke-linecap="round" opacity=".85">
+        <path d="M662 296c-14-20 14-32 0-54s14-34 0-54"/>
+        <path d="M702 290c-14-20 14-32 0-54s14-34 0-54"/>
+        <path d="M742 296c-14-20 14-32 0-54s14-34 0-54"/>
+      </g>
+
+      <!-- mascot -->
+      <g id="charClip">
+        <g id="char" transform="translate(-80 612)">
+          <g id="charFlip"><g id="charInner">
+            <g id="armB"><g transform="translate(-36 -74)"><g class="limb">
+              <line x1="0" y1="0" x2="0" y2="30" stroke="#2A1FB8" stroke-width="8" stroke-linecap="round"/>
+              <circle cy="35" r="7" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="4"/>
+            </g></g></g>
+            <g id="legL">
+              <line x1="-13" y1="-42" x2="-13" y2="-7" stroke="#2A1FB8" stroke-width="9" stroke-linecap="round"/>
+              <ellipse cx="-8" cy="-5" rx="12" ry="6.5" fill="#2A1FB8"/>
+            </g>
+            <g id="legR">
+              <line x1="13" y1="-42" x2="13" y2="-7" stroke="#2A1FB8" stroke-width="9" stroke-linecap="round"/>
+              <ellipse cx="18" cy="-5" rx="12" ry="6.5" fill="#2A1FB8"/>
+            </g>
+            <circle cx="-50" cy="-92" r="17" fill="none" stroke="#2A1FB8" stroke-width="11"/>
+            <path d="M-60-99A11 11 0 0 0-57-82" fill="none" stroke="#F2F6D8" stroke-width="3" stroke-linecap="round"/>
+            <path d="M-46-128H46C46-90 44-58 30-44 18-34-18-34-30-44-44-58-46-90-46-128Z" fill="#2A1FB8"/>
+            <path d="M37-116C37-90 35-68 25-55" fill="none" stroke="#F2F6D8" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+            <path d="M-50-124C-66-134-54-160-34-152-32-174-6-180 6-164 18-182 50-174 46-150 64-150 62-126 48-122 20-114-24-114-50-124Z" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="6" stroke-linejoin="round"/>
+            <path id="foamDrop" d="M14-196C4-186 4-176 14-174 24-176 24-186 14-196Z" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="5" stroke-linejoin="round"/>
+            <g id="eyes">
+              <g id="eyeL"><circle cx="-10" cy="-96" r="10" fill="#F2F6D8"/></g>
+              <g id="eyeR"><circle cx="20" cy="-100" r="10" fill="#F2F6D8"/></g>
+              <g id="pupils">
+                <circle cx="-7" cy="-99" r="4.5" fill="#2A1FB8"/>
+                <circle cx="23" cy="-103" r="4.5" fill="#2A1FB8"/>
+              </g>
+            </g>
+            <path d="M0-76Q10-66 22-79" fill="none" stroke="#F2F6D8" stroke-width="4.5" stroke-linecap="round"/>
+            <g id="armF"><g transform="translate(36 -74)"><g class="limb">
+              <line x1="0" y1="0" x2="0" y2="30" stroke="#2A1FB8" stroke-width="8" stroke-linecap="round"/>
+              <circle cy="35" r="7" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="4"/>
+            </g></g></g>
+          </g></g>
+          <g id="bang" opacity="0">
+            <circle cx="52" cy="-205" r="20" fill="#F2F6D8" stroke="#2A1FB8" stroke-width="4"/>
+            <text x="52" y="-195" text-anchor="middle" font-family="Rubik Mono One, Arial Black, sans-serif" font-size="26" fill="#2A1FB8">!</text>
+          </g>
+        </g>
+      </g>
+
+      <g id="splash"></g>
+
+      <!-- pothos hanging from the top, like the ones at the shop -->
+      <g id="vine" fill="#2A1FB8" stroke="#2A1FB8">
+        <path d="M1010-20C980 60 1000 120 950 170S960 250 930 290" fill="none" stroke-width="5" stroke-linecap="round"/>
+        <path d="M0 0C-14-12-22 8 0 26 22 8 14-12 0 0Z" transform="translate(992 62) rotate(-40) scale(1.5)" stroke="none"/>
+        <path d="M0 0C-14-12-22 8 0 26 22 8 14-12 0 0Z" transform="translate(968 132) rotate(50) scale(1.3)" stroke="none"/>
+        <path d="M0 0C-14-12-22 8 0 26 22 8 14-12 0 0Z" transform="translate(958 196) rotate(-30) scale(1.4)" stroke="none"/>
+        <path d="M0 0C-14-12-22 8 0 26 22 8 14-12 0 0Z" transform="translate(934 286) rotate(10) scale(1.2)" stroke="none"/>
+      </g>
+    </svg>
+    <button class="replay" id="replay" type="button" aria-label="Repetir animación">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+      Otra vez
+    </button>
+  </div>
+
+  <svg class="fly-drop" id="flyDrop" viewBox="0 0 18 24" aria-hidden="true">
+    <path d="M9 1C4 9 2 13 2 16a7 7 0 0 0 14 0c0-3-2-7-7-15Z" fill="#4E2814"/>
+  </svg>
+</header>
+
+<section class="band" id="visitanos" aria-label="Información">
+  <div class="band-inner">
+    <div><h2>HORARIO</h2><p class="tnum">Lunes a viernes 7:30am – 3:00pm<br>Sábado 8:00am – 2:00pm<br>Domingo cerrado</p></div>
+    <div><h2>DIRECCIÓN</h2><p>107 Calle Main Este<br>Urb. Jardines del Caribe<br>Ponce, PR 00728</p></div>
+    <div><h2>CONTACTO</h2><p class="tnum">(787) 412-0004<br>colaoespressobar@gmail.com<br>@colaoespressobar</p></div>
+  </div>
+</section>
+<p class="proto-note">Prototipo de portada · propuesta de En el Mapa</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const svg = $('#stage');
+  const hero = $('.hero');
+  const char = $('#char'), inner = $('#charInner'), flip = $('#charFlip');
+  const legL = $('#legL'), legR = $('#legR');
+  const armF = $('#armF .limb'), armB = $('#armB .limb');
+  const pupils = $('#pupils'), eyes = $('#eyes'), eyeL = $('#eyeL');
+  const bang = $('#bang'), clipG = $('#charClip'), shadow = $('#charShadow');
+  const splashG = $('#splash'), ripplesG = $('#ripples');
+  const apos = $('.wordmark .apos'), letters = document.querySelectorAll('.wordmark .ch');
+  const flyDrop = $('#flyDrop');
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const limbOrigin = { transformOrigin: '50% 0%' };
+  gsap.set([armF, armB, legL, legR], limbOrigin);
+  gsap.set(inner, { transformOrigin: '50% 100%' });
+  gsap.set(flip, { transformOrigin: '50% 55%' });
+
+  // Ambient loops: steam and the hanging vine
+  const steamPaths = document.querySelectorAll('#steam path');
+  steamPaths.forEach((p, i) => {
+    gsap.timeline({ repeat: -1, delay: i * .8 })
+      .fromTo(p, { y: 10 }, { y: -40, duration: 2.4, ease: 'none' }, 0)
+      .fromTo(p, { opacity: 0 }, { opacity: .9, duration: 1.2, ease: 'sine.out' }, 0)
+      .to(p, { opacity: 0, duration: 1.2, ease: 'sine.in' }, 1.2);
+  });
+  gsap.to('#vine', { rotation: 2.5, svgOrigin: '1000 0', duration: 3.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+  let idle = [];
+  let extras = [];
+
+  function stopIdle() { idle.forEach((t) => t.kill()); idle = []; }
+  function startIdle() {
+    if (reduce) return;
+    idle.push(gsap.to(char, { y: '+=6', duration: 1.3, repeat: -1, yoyo: true, ease: 'sine.inOut' }));
+    idle.push(gsap.to(eyes, { scaleY: .1, transformOrigin: '50% 50%', duration: .08, repeat: -1, yoyo: true, repeatDelay: 2.6 }));
+    idle.push(gsap.to(pupils, { keyframes: { x: [-3, 3, 3, -3], y: [-1, -1, -1, -1] }, duration: 6, repeat: -1, ease: 'none' }));
+  }
+
+  function svgToHero(x, y) {
+    const pt = svg.createSVGPoint(); pt.x = x; pt.y = y;
+    const p = pt.matrixTransform(svg.getScreenCTM());
+    const r = hero.getBoundingClientRect();
+    return { x: p.x - r.left, y: p.y - r.top };
+  }
+
+  function splash() {
+    // droplets
+    for (let i = 0; i < 18; i++) {
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('r', gsap.utils.random(4, 10));
+      c.setAttribute('fill', i % 3 ? '#4E2814' : '#B5733C');
+      splashG.appendChild(c);
+      const x0 = 700 + gsap.utils.random(-30, 30);
+      const dx = gsap.utils.random(-190, 190);
+      const up = gsap.utils.random(70, 230);
+      gsap.set(c, { x: x0, y: 334 });
+      const t1 = gsap.to(c, { x: x0 + dx, duration: 1.05, ease: 'none' });
+      const t2 = gsap.timeline()
+        .to(c, { y: 334 - up, duration: .42, ease: 'power2.out' })
+        .to(c, { y: 380 + gsap.utils.random(0, 120), duration: .6, ease: 'power2.in' })
+        .to(c, { opacity: 0, duration: .15 }, '-=.15')
+        .call(() => c.remove());
+      extras.push(t1, t2);
+    }
+    // crown of coffee
+    const crown = document.createElementNS(NS, 'path');
+    crown.setAttribute('d', 'M640 340C650 300 662 300 668 336 676 290 690 288 694 334 702 280 716 282 718 334 726 292 742 294 746 336 752 306 762 306 760 340Z');
+    crown.setAttribute('fill', '#4E2814');
+    splashG.appendChild(crown);
+    extras.push(gsap.timeline()
+      .fromTo(crown, { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: .18, ease: 'power2.out' })
+      .to(crown, { scaleY: 0, duration: .35, ease: 'power2.in' })
+      .call(() => crown.remove()));
+    // ripples
+    for (let i = 0; i < 3; i++) {
+      const e = document.createElementNS(NS, 'ellipse');
+      e.setAttribute('cx', 700); e.setAttribute('cy', 334); e.setAttribute('rx', 6); e.setAttribute('ry', 1);
+      e.setAttribute('fill', 'none'); e.setAttribute('stroke', '#F2F6D8'); e.setAttribute('stroke-width', 3);
+      ripplesG.appendChild(e);
+      extras.push(gsap.fromTo(e, { attr: { rx: 6, ry: 1 }, opacity: .9 },
+        { attr: { rx: 140, ry: 26 }, opacity: 0, duration: 1.3, delay: i * .25, ease: 'power1.out', onComplete: () => e.remove() }));
+    }
+    flyToApostrophe();
+  }
+
+  function flyToApostrophe() {
+    const a = svgToHero(700, 300);
+    const ar = apos.getBoundingClientRect(), hr = hero.getBoundingClientRect();
+    const b = { x: ar.left - hr.left + ar.width / 2, y: ar.top - hr.top + ar.height * .35 };
+    const peak = Math.min(a.y, b.y) - 140;
+    gsap.set(flyDrop, { x: a.x, y: a.y, visibility: 'visible', scale: 1, rotation: 0 });
+    const t = gsap.timeline()
+      .to(flyDrop, { x: b.x, duration: 1.0, ease: 'power1.inOut' }, 0)
+      .to(flyDrop, { y: peak, duration: .45, ease: 'power2.out' }, 0)
+      .to(flyDrop, { y: b.y, duration: .55, ease: 'power2.in' }, .45)
+      .to(flyDrop, { rotation: 180, duration: 1.0, ease: 'none' }, 0)
+      .set(flyDrop, { visibility: 'hidden' })
+      .fromTo(apos, { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: .9, ease: 'elastic.out(1, .4)' })
+      .to(letters, { y: -14, duration: .14, ease: 'power2.out', stagger: { each: .05, from: 'end' }, yoyo: true, repeat: 1 }, '<');
+    extras.push(t);
+  }
+
+  function clearExtras() {
+    extras.forEach((t) => t.kill()); extras = [];
+    splashG.replaceChildren(); ripplesG.replaceChildren();
+    gsap.set(flyDrop, { visibility: 'hidden' });
+    gsap.set(letters, { y: 0 });
+  }
+
+  const tl = gsap.timeline({ paused: true, onComplete: startIdle });
+
+  // starting pose
+  tl.set(clipG, { attr: { 'clip-path': 'none' } }, 0)
+    .set(char, { x: -80, y: 612 }, 0)
+    .set(inner, { rotation: 0, scaleX: 1, scaleY: 1, y: 0 }, 0)
+    .set(flip, { rotation: 0 }, 0)
+    .set([armF, armB, legL, legR], { rotation: 0 }, 0)
+    .set(pupils, { x: 0, y: 0 }, 0)
+    .set(eyes, { scaleY: 1 }, 0)
+    .set(bang, { opacity: 0, scale: 0, y: 0 }, 0)
+    .set(apos, { scale: 0 }, 0)
+    .set(shadow, { opacity: .18, attr: { cx: -80 } }, 0)
+    .set('#heart', { scaleX: 1, scaleY: 1 }, 0);
+
+  // 1. walk in
+  tl.addLabel('walk', .3)
+    .to(char, { x: 516, duration: 2.64, ease: 'none' }, 'walk')
+    .to(shadow, { attr: { cx: 516 }, duration: 2.64, ease: 'none' }, 'walk')
+    .fromTo(legL, { rotation: -26 }, { rotation: 26, duration: .22, repeat: 11, yoyo: true, ease: 'sine.inOut' }, 'walk')
+    .fromTo(legR, { rotation: 26 }, { rotation: -26, duration: .22, repeat: 11, yoyo: true, ease: 'sine.inOut' }, 'walk')
+    .fromTo(armF, { rotation: 22 }, { rotation: -22, duration: .22, repeat: 11, yoyo: true, ease: 'sine.inOut' }, 'walk')
+    .fromTo(armB, { rotation: -22 }, { rotation: 22, duration: .22, repeat: 11, yoyo: true, ease: 'sine.inOut' }, 'walk')
+    .fromTo(inner, { y: 0 }, { y: -6, duration: .11, repeat: 23, yoyo: true, ease: 'sine.inOut' }, 'walk');
+
+  // 2. stop and look up at the cup
+  tl.addLabel('look')
+    .to([legL, legR, armF, armB], { rotation: 0, duration: .2 }, 'look')
+    .to(inner, { y: 0, rotation: -8, duration: .35, ease: 'back.out(2)' }, 'look')
+    .to(pupils, { x: 3, y: -4, duration: .25 }, 'look')
+    .to(bang, { opacity: 1, scale: 1, transformOrigin: '50% 100%', duration: .3, ease: 'back.out(3)' }, 'look+=.15')
+    .to(bang, { opacity: 0, y: -12, duration: .25 }, 'look+=.85');
+
+  // 3. hop onto the saucer
+  tl.addLabel('hop', 'look+=.95')
+    .to(inner, { rotation: 6, duration: .25 }, 'hop')
+    .to(char, { x: 532, duration: .35, ease: 'power1.inOut' }, 'hop')
+    .to(char, { keyframes: { y: [612, 582, 600] }, duration: .35 }, 'hop')
+    .to(shadow, { opacity: 0, duration: .3 }, 'hop');
+
+  // 4. climb the side of the cup
+  tl.addLabel('climb')
+    .to(char, { x: 510, y: 352, duration: 2.2, ease: 'power1.inOut' }, 'climb')
+    .to(inner, { rotation: 10, duration: .3 }, 'climb')
+    .fromTo(armF, { rotation: -170 }, { rotation: -120, duration: .275, repeat: 7, yoyo: true, ease: 'sine.inOut' }, 'climb')
+    .fromTo(armB, { rotation: -115 }, { rotation: -165, duration: .275, repeat: 7, yoyo: true, ease: 'sine.inOut' }, 'climb')
+    .fromTo(legL, { rotation: -40 }, { rotation: 5, duration: .275, repeat: 7, yoyo: true, ease: 'sine.inOut' }, 'climb')
+    .fromTo(legR, { rotation: 5 }, { rotation: -40, duration: .275, repeat: 7, yoyo: true, ease: 'sine.inOut' }, 'climb');
+
+  // 5. pull up onto the rim
+  tl.addLabel('mantle')
+    .to(char, { x: 594, duration: .5, ease: 'power1.inOut' }, 'mantle')
+    .to(char, { keyframes: { y: [352, 296, 336] }, duration: .5 }, 'mantle')
+    .to([armF, armB, legL, legR], { rotation: 0, duration: .3 }, 'mantle')
+    .to(inner, { rotation: 0, duration: .3 }, 'mantle');
+
+  // 6. wobble on the edge
+  tl.addLabel('wobble')
+    .to(armF, { rotation: -95, duration: .2 }, 'wobble')
+    .to(armB, { rotation: 95, duration: .2 }, 'wobble')
+    .to(pupils, { x: -3, y: 4, duration: .2 }, 'wobble')
+    .to(inner, { keyframes: { rotation: [-14, 11, -7, 4, 0] }, duration: 1.0 }, 'wobble');
+
+  // 7. wave and wink at the visitor
+  tl.addLabel('wave')
+    .to(armB, { rotation: 12, duration: .2 }, 'wave')
+    .to(pupils, { x: -2, y: 0, duration: .2 }, 'wave')
+    .fromTo(armF, { rotation: -150 }, { rotation: -178, duration: .16, repeat: 5, yoyo: true, ease: 'sine.inOut', immediateRender: false }, 'wave')
+    .to(eyeL, { scaleY: .12, transformOrigin: '50% 50%', duration: .1, repeat: 1, yoyo: true, repeatDelay: .35 }, 'wave+=.3');
+
+  // 8. crouch, jump, flip and dive
+  tl.addLabel('crouch', 'wave+=1.05')
+    .to(armF, { rotation: 30, duration: .25 }, 'crouch')
+    .to(armB, { rotation: -30, duration: .25 }, 'crouch')
+    .to(pupils, { x: 3, y: 2, duration: .2 }, 'crouch')
+    .to(inner, { scaleY: .78, scaleX: 1.12, duration: .28, ease: 'power2.in' }, 'crouch');
+
+  tl.addLabel('jump')
+    .set(clipG, { attr: { 'clip-path': 'url(#aboveSurface)' } }, 'jump')
+    .to(inner, { scaleY: 1.08, scaleX: .94, duration: .15, ease: 'power2.out' }, 'jump')
+    .to(inner, { scaleY: 1, scaleX: 1, duration: .3 }, 'jump+=.15')
+    .to(armF, { rotation: -175, duration: .2 }, 'jump')
+    .to(armB, { rotation: 175, duration: .2 }, 'jump')
+    .to(char, { x: 655, y: 170, duration: .42, ease: 'power2.out' }, 'jump')
+    .to(flip, { rotation: 190, duration: .82, ease: 'power1.inOut' }, 'jump')
+    .to(char, { x: 700, y: 600, duration: .5, ease: 'power2.in' }, 'jump+=.42')
+    .call(splash, null, 'jump+=.66')
+    .to('#heart', { keyframes: { scaleX: [1.3, .8, 1.1, 1], scaleY: [.5, 1.3, .9, 1] }, transformOrigin: '50% 50%', duration: 1.1 }, 'jump+=.66')
+    .to('#crema', { keyframes: { attr: { rx: [118, 106, 112, 110] } }, duration: 1.1 }, 'jump+=.66');
+
+  // 9. peek out of the coffee
+  tl.addLabel('peek', 'jump+=2.1')
+    .set(flip, { rotation: 0 }, 'peek')
+    .set(inner, { rotation: 0, scaleX: 1, scaleY: 1 }, 'peek')
+    .set([armF, armB, legL, legR], { rotation: 0 }, 'peek')
+    .set(pupils, { x: -3, y: -1 }, 'peek')
+    .set(char, { x: 704, y: 580 }, 'peek')
+    .to(char, { y: 426, duration: .8, ease: 'back.out(1.6)' }, 'peek');
+
+  function finalState() {
+    tl.progress(1, true);
+    gsap.set(apos, { scale: 1, rotation: 0 });
+  }
+
+  function play() {
+    stopIdle(); clearExtras();
+    if (reduce) { finalState(); return; }
+    tl.restart();
+  }
+
+  $('#replay').addEventListener('click', play);
+  svg.addEventListener('click', play);
+
+  if (reduce) {
+    finalState();
+  } else {
+    const go = () => tl.play(0);
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go);
+  }
+
+  // test hook: jump to a moment for screenshots
+  window.__colaoSeek = (t) => { stopIdle(); clearExtras(); tl.pause(t); };
+  window.__colaoTl = tl;
+})();
+</script>
+</body>
+</html>
