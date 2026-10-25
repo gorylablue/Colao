@@ -63,16 +63,20 @@
   .btn:focus-visible, .replay:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
 
   /* ---------- Hero ---------- */
+  .hero-shell { overflow-x: clip; }
   .hero {
     position: relative;
     display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    align-items: center; gap: 12px;
+    grid-template-areas: "top stage" "bottom stage";
+    align-content: center; column-gap: 12px; row-gap: 28px;
     max-width: 1280px; margin: 0 auto;
     padding-block: 8px 0;
     padding-left: max(20px, env(safe-area-inset-left, 0px));
     padding-right: max(20px, env(safe-area-inset-right, 0px));
   }
-  .copy { display: grid; gap: 22px; min-width: 0; padding-bottom: 56px; position: relative; z-index: 2; }
+  .copy { display: grid; gap: 22px; min-width: 0; position: relative; z-index: 2; }
+  .copy-top { grid-area: top; align-self: end; }
+  .copy-bottom { grid-area: bottom; align-self: start; padding-bottom: 56px; }
   .eyebrow {
     display: flex; align-items: center; gap: 12px;
     font-weight: 800; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--indigo);
@@ -105,11 +109,11 @@
   }
   .facts b { color: var(--indigo); }
 
-  .stage-wrap { position: relative; min-width: 0; z-index: 1; }
+  .stage-wrap { grid-area: stage; align-self: center; position: relative; min-width: 0; z-index: 1; --floor: 12.571%; }
   #stage { display: block; width: 100%; height: auto; overflow: visible; cursor: pointer; clip-path: inset(-400px 0 0 0); }
   /* the counter keeps going past the stage, under the copy and to the right edge */
   .stage-wrap::before {
-    content: ""; position: absolute; bottom: 0; left: -100vw; right: -100vw; height: 12.571%;
+    content: ""; position: absolute; bottom: 0; left: -100vw; right: -100vw; height: var(--floor);
     background: var(--sky-deep); border-top: 5px solid var(--indigo); z-index: -1;
   }
   .replay {
@@ -125,25 +129,139 @@
     pointer-events: none; z-index: 5; visibility: hidden;
   }
 
-  /* ---------- Info band ---------- */
-  .band { background: var(--indigo); color: var(--cream); }
-  .band-inner {
+  /* ---------- Shared section frame ---------- */
+  .wrap {
     max-width: 1280px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px;
-    padding-block: 34px;
     padding-left: max(20px, env(safe-area-inset-left, 0px));
     padding-right: max(20px, env(safe-area-inset-right, 0px));
   }
-  .band h2 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 400; font-size: 14px; letter-spacing: .06em; color: var(--sky); }
-  .band p { margin: 0; font-size: 17px; line-height: 1.45; }
-  .band .tnum { font-variant-numeric: tabular-nums; }
-  .proto-note { text-align: center; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--indigo); opacity: .7; padding-block: 14px; }
+  section { scroll-margin-top: 16px; }
+  .sec-head { display: grid; gap: 10px; margin-bottom: 34px; }
+  .sec-title {
+    margin: 0; font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(34px, 5vw, 60px); line-height: 1; color: var(--indigo); text-wrap: balance;
+  }
+  .sec-sub { margin: 0; font-size: 18px; max-width: 34em; color: var(--indigo-ink); }
+
+  /* ---------- Menu ---------- */
+  .menu { background: var(--cream); padding-block: 84px 72px; border-top: 5px solid var(--indigo); }
+  .tabs {
+    display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 28px;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 0 0 auto; font: 700 15px/1 var(--font-body); color: var(--indigo);
+    background: transparent; border: 2.5px solid var(--indigo); border-radius: 999px;
+    padding: 11px 16px; cursor: pointer;
+  }
+  .tab[aria-selected="true"] { background: var(--indigo); color: var(--cream); }
+  .tab:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+  .panel-note { margin: 0 0 18px; font-size: 15px; font-weight: 600; color: var(--indigo); }
+  .items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 56px; }
+  .item { display: grid; gap: 4px; padding-block: 16px; border-bottom: 2px dashed color-mix(in srgb, var(--indigo) 28%, transparent); min-width: 0; }
+  .item-row { display: flex; align-items: baseline; gap: 10px; }
+  .item-name { font-weight: 800; font-size: 18px; color: var(--indigo-ink); }
+  .item-row .dots { flex: 1; border-bottom: 2px dotted color-mix(in srgb, var(--indigo) 35%, transparent); transform: translateY(-4px); min-width: 12px; }
+  .price { font-weight: 800; font-size: 18px; color: var(--indigo); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sizes { display: flex; gap: 14px; }
+  .sizes span { min-width: 3.6em; text-align: right; }
+  .sizes small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em; opacity: .7; }
+  .item-desc { margin: 0; font-size: 15px; line-height: 1.45; color: color-mix(in srgb, var(--indigo-ink) 82%, transparent); max-width: 36em; }
+  .tag {
+    display: inline-block; margin-left: 6px; padding: 2px 8px; border-radius: 999px; vertical-align: 2px;
+    font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  }
+  .tag-fav { background: var(--sky); color: var(--indigo); }
+  .tag-hot { background: var(--indigo); color: var(--cream); }
+  .salsas {
+    margin-top: 44px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    padding: 20px 22px; border-radius: 20px; background: var(--sky);
+  }
+  .salsas strong { font-family: var(--font-display); font-weight: 400; font-size: 15px; color: var(--indigo); margin-right: 6px; }
+  .salsas span { background: var(--cream); color: var(--indigo-ink); font-weight: 700; font-size: 14px; padding: 6px 12px; border-radius: 999px; }
+  .menu-foot { margin: 22px 0 0; font-size: 13px; color: var(--indigo-ink); opacity: .75; }
+
+  /* ---------- About ---------- */
+  .about { padding-block: 90px; }
+  .about-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 56px; align-items: center; }
+  .about-copy { display: grid; gap: 18px; min-width: 0; }
+  .about-copy p { margin: 0; font-size: 19px; line-height: 1.55; max-width: 32em; }
+  .quotes { display: grid; gap: 14px; margin-top: 10px; }
+  .quote { margin: 0; padding: 16px 20px; border-left: 5px solid var(--indigo); background: color-mix(in srgb, var(--cream) 60%, transparent); border-radius: 0 16px 16px 0; }
+  .quote p { margin: 0; font-weight: 700; font-size: 18px !important; color: var(--indigo-ink); }
+  .quote cite { display: block; margin-top: 4px; font-style: normal; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--indigo); }
+  .about-photo { position: relative; margin: 0; }
+  .about-photo img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 28px; border: 5px solid var(--indigo); box-shadow: 10px 10px 0 var(--indigo); }
+  .about-photo svg { position: absolute; width: 96px; height: 120px; left: -26px; bottom: -34px; transform: rotate(-8deg); }
+
+  /* ---------- Gallery ---------- */
+  .gallery-sec { background: var(--indigo); padding-block: 84px; color: var(--cream); }
+  .gallery-sec .sec-title { color: var(--cream); }
+  .gallery-sec .sec-sub { color: var(--sky); }
+  .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .gallery figure { margin: 0; position: relative; overflow: hidden; border-radius: 20px; background: var(--indigo-ink); }
+  .gallery figure:nth-child(1) { grid-row: span 2; }
+  .gallery figure:nth-child(1) img { aspect-ratio: auto; }
+  .gallery img { display: block; width: 100%; height: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform .5s ease; }
+  .gallery figure:hover img { transform: scale(1.05); }
+  .gallery figcaption {
+    position: absolute; left: 10px; bottom: 10px; padding: 6px 11px; border-radius: 999px;
+    background: var(--cream); color: var(--indigo); font-weight: 800; font-size: 13px;
+  }
+  .gallery-cta { margin-top: 28px; }
+  .gallery-sec .btn-ghost { color: var(--cream); border-color: var(--cream); box-shadow: 0 5px 0 var(--sky); }
+
+  /* ---------- Ratings ---------- */
+  .ratings-sec { padding-block: 72px 0; }
+  .ratings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .rating { padding: 24px; border-radius: 22px; background: var(--cream); border: 3px solid var(--indigo); display: grid; gap: 4px; }
+  .rating b { font-family: var(--font-display); font-weight: 400; font-size: 46px; line-height: 1; color: var(--indigo); font-variant-numeric: tabular-nums; }
+  .rating span { font-weight: 700; color: var(--indigo-ink); }
+  .stars { color: var(--indigo); letter-spacing: 2px; font-size: 18px; }
+
+  /* ---------- Visit ---------- */
+  .visit { padding-block: 84px; }
+  .visit-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; align-items: stretch; }
+  .visit-info { display: grid; gap: 26px; align-content: start; min-width: 0; }
+  .visit-info h3 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 400; font-size: 14px; letter-spacing: .06em; color: var(--indigo); }
+  .visit-info p { margin: 0; font-size: 18px; line-height: 1.5; }
+  .hours { width: 100%; max-width: 22em; border-collapse: collapse; font-size: 17px; font-variant-numeric: tabular-nums; }
+  .hours td { padding: 6px 0; border-bottom: 2px dashed color-mix(in srgb, var(--indigo) 25%, transparent); }
+  .hours td:last-child { text-align: right; font-weight: 700; }
+  .hours tr.today td { color: var(--indigo); font-weight: 800; }
+  .map { min-height: 360px; border-radius: 28px; overflow: hidden; border: 5px solid var(--indigo); box-shadow: 10px 10px 0 var(--indigo); background: var(--cream); }
+  .map iframe { display: block; width: 100%; height: 100%; min-height: 360px; border: 0; }
+  #ordenar { scroll-margin-top: 80px; }
+
+  /* ---------- Footer ---------- */
+  .footer { background: var(--indigo); color: var(--cream); padding-block: 44px 30px; }
+  .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 22px; }
+  .footer .brand span { color: var(--cream); }
+  .footer .brand svg { background: var(--sky); border-radius: 50%; padding: 4px; }
+  .footer nav { display: flex; flex-wrap: wrap; gap: 20px; font-weight: 700; }
+  .footer a { text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+  .footer small { flex-basis: 100%; font-size: 13px; opacity: .75; }
+  .proto-note { text-align: center; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; color: var(--sky); padding-block: 0 18px; background: var(--indigo); margin: 0; }
+
+  @media (max-width: 700px) {
+    .items { grid-template-columns: minmax(0, 1fr); }
+    .menu, .about, .gallery-sec, .visit { padding-block: 60px; }
+  }
 
   @media (max-width: 900px) {
     .nav ul { display: none; }
-    .hero { grid-template-columns: minmax(0, 1fr); gap: 0; }
-    .copy { padding-bottom: 0; padding-top: 8px; }
-    .band-inner { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "stage" "bottom"; row-gap: 0; }
+    .copy-top { padding-top: 8px; }
+    .copy-bottom { padding-top: 26px; padding-bottom: 36px; }
+    .stage-wrap { --floor: 15.714%; margin-top: 4px; }
+    #vine { display: none; }
+    .about-grid, .visit-grid { grid-template-columns: minmax(0, 1fr); }
+    .ratings { grid-template-columns: minmax(0, 1fr); }
+    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .gallery figure:nth-child(1) { grid-row: auto; grid-column: span 2; }
+    .gallery figure:nth-child(1) img { aspect-ratio: 4 / 3; }
   }
   @media (max-width: 420px) {
     .nav .btn { padding: 11px 16px; font-size: 14px; }
@@ -176,26 +294,18 @@
   <ul>
     <li><a href="#menu">Menú</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#bookclub">Book Club</a></li>
+    <li><a href="#galeria">Galería</a></li>
     <li><a href="#visitanos">Visítanos</a></li>
   </ul>
-  <a class="btn btn-solid" href="https://www.ubereats.com" target="_blank" rel="noopener">Ordenar</a>
+  <a class="btn btn-solid" href="#ordenar">Ordenar</a>
 </nav>
 
+<div class="hero-shell">
 <header class="hero" id="top">
-  <div class="copy">
+  <div class="copy copy-top">
     <div class="eyebrow"><i></i>Specialty coffee · Ponce, PR</div>
     <h1 class="wordmark" aria-label="Colao'"><span class="ch">C</span><span class="ch">O</span><span class="ch">L</span><span class="ch">A</span><span class="ch">O</span><span class="apos">'</span></h1>
     <div class="estd">ESTD. <i></i> 2019</div>
-    <p class="lede">Café de especialidad y desayuno todo el día, colao’ con calma en Jardines del Caribe.</p>
-    <div class="ctas">
-      <a class="btn btn-solid" href="#menu">Ver el menú</a>
-      <a class="btn btn-ghost" href="https://maps.google.com/?q=Colao+Espresso+Bar+Ponce" target="_blank" rel="noopener">Cómo llegar</a>
-    </div>
-    <div class="facts">
-      <span><b>★ 4.8</b> · 117 opiniones en Google</span>
-      <span>Lun–Vie 7:30am–3pm · Sáb 8am–2pm</span>
-    </div>
   </div>
 
   <div class="stage-wrap">
@@ -296,19 +406,232 @@
     </button>
   </div>
 
+  <div class="copy copy-bottom">
+    <p class="lede">Café de especialidad y desayuno todo el día, colao’ con calma en Jardines del Caribe.</p>
+    <div class="ctas">
+      <a class="btn btn-solid" href="#menu">Ver el menú</a>
+      <a class="btn btn-ghost" href="https://maps.google.com/?q=Colao+Espresso+Bar+Ponce" target="_blank" rel="noopener">Cómo llegar</a>
+    </div>
+    <div class="facts">
+      <span><b>★ 4.8</b> · 117 opiniones en Google</span>
+      <span>Lun–Vie 7:30am–3pm · Sáb 8am–2pm</span>
+    </div>
+  </div>
+
   <svg class="fly-drop" id="flyDrop" viewBox="0 0 18 24" aria-hidden="true">
     <path d="M9 1C4 9 2 13 2 16a7 7 0 0 0 14 0c0-3-2-7-7-15Z" fill="#4E2814"/>
   </svg>
 </header>
+</div>
 
-<section class="band" id="visitanos" aria-label="Información">
-  <div class="band-inner">
-    <div><h2>HORARIO</h2><p class="tnum">Lunes a viernes 7:30am – 3:00pm<br>Sábado 8:00am – 2:00pm<br>Domingo cerrado</p></div>
-    <div><h2>DIRECCIÓN</h2><p>107 Calle Main Este<br>Urb. Jardines del Caribe<br>Ponce, PR 00728</p></div>
-    <div><h2>CONTACTO</h2><p class="tnum">(787) 412-0004<br>colaoespressobar@gmail.com<br>@colaoespressobar</p></div>
+<section class="menu" id="menu" aria-labelledby="menu-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><i></i>Breakfast all day</div>
+      <h2 class="sec-title" id="menu-title">El menú</h2>
+      <p class="sec-sub">Café de especialidad, desayunos que no se acaban a las 11 y sandwiches con salsas hechas en casa.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Categorías del menú">
+      <button class="tab" role="tab" id="tab-desayunos" aria-controls="panel-desayunos" aria-selected="true" tabindex="0">Desayunos</button>
+      <button class="tab" role="tab" id="tab-sandwiches" aria-controls="panel-sandwiches" aria-selected="false" tabindex="-1">Sandwiches</button>
+      <button class="tab" role="tab" id="tab-almuerzos" aria-controls="panel-almuerzos" aria-selected="false" tabindex="-1">Almuerzos</button>
+      <button class="tab" role="tab" id="tab-calientes" aria-controls="panel-calientes" aria-selected="false" tabindex="-1">Café caliente</button>
+      <button class="tab" role="tab" id="tab-frias" aria-controls="panel-frias" aria-selected="false" tabindex="-1">Bebidas frías</button>
+      <button class="tab" role="tab" id="tab-antojos" aria-controls="panel-antojos" aria-selected="false" tabindex="-1">Antojos y extras</button>
+      <button class="tab" role="tab" id="tab-kids" aria-controls="panel-kids" aria-selected="false" tabindex="-1">Colao&#x27; Kids</button>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-desayunos" aria-labelledby="tab-desayunos">
+      <p class="panel-note">Desayuno todo el día, de lunes a sábado.</p>
+      <div class="items">
+        <div class="item"><div class="item-row"><span class="item-name">Desayuno clásico</span><span class="dots"></span><span class="price">$9.00</span></div><p class="item-desc">Dos huevos fritos con tostadas criollas. Escoge entre jamón, pavo o tocineta. Cambia por revoltillo +$1.50.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Breakfast burrito</span><span class="dots"></span><span class="price">$11.50</span></div><p class="item-desc">Huevo revuelto, pico de gallo, refrito, queso monterrey y cilantro aioli. Escoge jamón, pavo o tocineta.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Breakfast tacos<span class="tag tag-fav">Favorito</span><span class="tag tag-hot">Picante</span></span><span class="dots"></span><span class="price">$9.50</span></div><p class="item-desc">Dos tacos de tortilla de maíz con huevos revueltos, refrito, queso monterrey, chipotle aioli y salsa verde de tomatillo.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Breakfast burger<span class="tag tag-fav">Favorito</span></span><span class="dots"></span><span class="price">$11.00</span></div><p class="item-desc">Dos patties de salchicha, queso cheddar, tocineta, tortilla de huevo y aioli de ajo en pan brioche.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Huevos estrellados<span class="tag tag-hot">Picante</span></span><span class="dots"></span><span class="price">$12.50</span></div><p class="item-desc">Dos huevos fritos sobre papas salteadas con vegetales, queso monterrey, tocineta, pico de gallo y salsa chipotle.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Belgian waffles<span class="tag tag-fav">Favorito</span></span><span class="dots"></span><span class="price">$7.00</span></div><p class="item-desc">Dos waffles estilo belga con syrup y whipped cream. Añade frutas +$2 o Nutella +$1.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Combo waffle</span><span class="dots"></span><span class="price">$12.50</span></div><p class="item-desc">Un waffle belga con dos huevos fritos o revueltos con vegetales y queso. Escoge jamón, pavo o tocineta.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Chicken &amp; waffles<span class="tag tag-fav">Favorito</span><span class="tag tag-hot">Picante</span></span><span class="dots"></span><span class="price">$15.50</span></div><p class="item-desc">Dos waffles belgas con chicken strips, huevo frito y un toque de hot honey.</p></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-sandwiches" aria-labelledby="tab-sandwiches" hidden>
+      <p class="panel-note">Todos incluyen side de chips. Upgrade: frutas +$2 o papas salteadas +$3.</p>
+      <div class="items">
+        <div class="item"><div class="item-row"><span class="item-name">El Asere<span class="tag tag-fav">Favorito</span></span><span class="dots"></span><span class="price">$10.00</span></div><p class="item-desc">Sandwich cubano a nuestro estilo: pernil, jamón ahumado, queso muenster, pepinillos y honey mustard en pan sobao.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">El Porky</span><span class="dots"></span><span class="price">$10.00</span></div><p class="item-desc">Pulled pork, queso muenster, cebollas encurtidas y aioli de ajo en pan brioche.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Turkey BLT<span class="tag tag-fav">Favorito</span></span><span class="dots"></span><span class="price">$8.50</span></div><p class="item-desc">Jamón de pavo, tocineta, queso suizo, cilantro, lechuga orgánica y tomate en pan multigrano.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">El Derretío&#x27;</span><span class="dots"></span><span class="price">$8.00</span></div><p class="item-desc">Grilled cheese con queso cheddar, muenster y suizo en pan sourdough con un toque de miel picante.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Criollo<span class="tag tag-fav">Favorito</span></span><span class="dots"></span><span class="price">$7.50</span></div><p class="item-desc">Jamón, queso cheddar, huevo frito, lechuga orgánica, tomate y aioli de ajo en pan sobao.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Avocado toast</span><span class="dots"></span><span class="price">$10.50</span></div><p class="item-desc">Guacamole, frijoles refritos, cilantro aioli, huevo frito, lechuga orgánica, tomates, queso feta y cebollas encurtidas en pan multigrano.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">El Tunita</span><span class="dots"></span><span class="price">$8.50</span></div><p class="item-desc">Ensalada de atún, queso suizo, lechuga orgánica y tomate en pan multigrano. Pídelo en wrap +$0.75.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">El Frenchie</span><span class="dots"></span><span class="price">$7.00</span></div><p class="item-desc">Croissant con jamón, queso suizo, lechuga orgánica, tomate y salsa de guayaba.</p></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-almuerzos" aria-labelledby="tab-almuerzos" hidden>
+      <p class="panel-note">Cambia a carnitas por +$2.</p>
+      <div class="items">
+        <div class="item"><div class="item-row"><span class="item-name">Southwestern wrap<span class="tag tag-hot">Picante</span></span><span class="dots"></span><span class="price">$10.00</span></div><p class="item-desc">Pollo, lechuga orgánica, cherry tomatoes, queso feta, ensalada de granos y chipotle aioli en tortilla integral.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Mexi rice bowl<span class="tag tag-fav">Favorito</span></span><span class="dots"></span><span class="price">$11.00</span></div><p class="item-desc">Arroz amarillo con cilantro aioli, pollo, lechuga orgánica, ensalada de granos, pico de gallo, queso monterrey y cebollas encurtidas. Pídelo sin arroz (low carb).</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Quesadilla</span><span class="dots"></span><span class="price">$9.50</span></div><p class="item-desc">Pollo y queso monterrey en tortilla integral. Escoge dos salsas: pico de gallo, chipotle, cilantro aioli o tomatillo. Guacamole +$1.</p></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-calientes" aria-labelledby="tab-calientes" hidden>
+      <p class="panel-note">Espresso de especialidad, colado al momento.</p>
+      <div class="items">
+        <div class="item"><div class="item-row"><span class="item-name">Americano</span><span class="dots"></span><span class="price sizes"><span><small>8 oz</small>$2.50</span><span><small>12 oz</small>$3.00</span><span><small>16 oz</small>$4.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Latte</span><span class="dots"></span><span class="price sizes"><span><small>8 oz</small>$3.25</span><span><small>12 oz</small>$4.25</span><span><small>16 oz</small>$5.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Capuccino tradicional</span><span class="dots"></span><span class="price sizes"><span><small>8 oz</small>$3.25</span><span><small>12 oz</small>$4.25</span><span><small>16 oz</small>$5.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Matcha ceremonial</span><span class="dots"></span><span class="price sizes"><span><small>8 oz</small>$4.50</span><span><small>12 oz</small>$5.50</span><span><small>16 oz</small>$7.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Chai</span><span class="dots"></span><span class="price sizes"><span><small>8 oz</small>$3.25</span><span><small>12 oz</small>$4.25</span><span><small>16 oz</small>$5.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Chocolate caliente</span><span class="dots"></span><span class="price sizes"><span><small>8 oz</small>$3.25</span><span><small>12 oz</small>$4.25</span><span><small>16 oz</small>$5.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">House salted mocha<span class="tag tag-fav">Favorito</span></span><span class="dots"></span><span class="price sizes"><span><small>8 oz</small>$5.00</span><span><small>12 oz</small>$6.00</span><span><small>16 oz</small>$7.00</span></span></div><p class="item-desc">Elaborado con chocolate premium importado de Bélgica.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Espresso</span><span class="dots"></span><span class="price">$2.25</span></div><p class="item-desc">Doble, 2 oz.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Cortado</span><span class="dots"></span><span class="price">$2.75</span></div><p class="item-desc">4 oz.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Macchiato</span><span class="dots"></span><span class="price">$2.50</span></div><p class="item-desc">2 oz.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Té</span><span class="dots"></span><span class="price">$3.00</span></div><p class="item-desc">Según disponibilidad.</p></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-frias" aria-labelledby="tab-frias" hidden>
+      <p class="panel-note">Para el calor de Ponce.</p>
+      <div class="items">
+        <div class="item"><div class="item-row"><span class="item-name">Iced latte</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$5.00</span><span><small>20 oz</small>$7.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Iced matcha</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$6.00</span><span><small>20 oz</small>$7.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Iced chai</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$5.00</span><span><small>20 oz</small>$7.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Shakerato</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$6.00</span><span><small>20 oz</small>—</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Frozen coffee</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$6.50</span><span><small>20 oz</small>$7.50</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Frozen matcha</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$7.00</span><span><small>20 oz</small>$8.00</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Frozen chai</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$6.50</span><span><small>20 oz</small>$7.50</span></span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Frappé</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>$6.00</span><span><small>20 oz</small>$6.50</span></span></div><p class="item-desc">Según disponibilidad.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Limonada fresca</span><span class="dots"></span><span class="price sizes"><span><small>16 oz</small>—</span><span><small>20 oz</small>$6.00</span></span></div><p class="item-desc">Original, fresa, parcha, piña colada, mango, lavanda, hibiscus o matcha +$1.</p></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-antojos" aria-labelledby="tab-antojos" hidden>
+      <p class="panel-note">Para acompañar el café.</p>
+      <div class="items">
+        <div class="item"><div class="item-row"><span class="item-name">Tostadas criollas con mantequilla</span><span class="dots"></span><span class="price">$2.50</span></div><p class="item-desc">Sourdough o multigrano +$1, bagel +$1, croissant +$1. Añade queso crema +$1.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Cereales calientes</span><span class="dots"></span><span class="price">$3.75</span></div><p class="item-desc">Avena, harina de maíz o maicena, con canela y granola. Añade frutas +$1.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Ensalada de granos</span><span class="dots"></span><span class="price">$6.00</span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Yogurt parfait</span><span class="dots"></span><span class="price">$5.50</span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Ensalada de frutas</span><span class="dots"></span><span class="price">$6.00</span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Side de chips</span><span class="dots"></span><span class="price">$4.00</span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Sabores</span><span class="dots"></span><span class="price">+$1.00</span></div><p class="item-desc">Vainilla, coco, amaretto, chocolate, chocolate blanco, caramelo o lavanda.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Extra shot</span><span class="dots"></span><span class="price">+$1.00</span></div><p class="item-desc">1 oz de espresso.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Cold foam</span><span class="dots"></span><span class="price">+$1.50</span></div></div>
+        <div class="item"><div class="item-row"><span class="item-name">Sustituir leche</span><span class="dots"></span><span class="price">+$1.00</span></div><p class="item-desc">Avena, almendra o lactose free.</p></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-kids" aria-labelledby="tab-kids" hidden>
+      <p class="panel-note">Para los más chiquitos de la casa.</p>
+      <div class="items">
+        <div class="item"><div class="item-row"><span class="item-name">Belgian waffle</span><span class="dots"></span><span class="price">$4.50</span></div><p class="item-desc">Un waffle belga con frutas, syrup y whipped cream. Añade Nutella +$1.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Mini revoltillo</span><span class="dots"></span><span class="price">$7.50</span></div><p class="item-desc">Huevo revuelto con jamón o bacon y una tostada de pan sobao.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Colaíto</span><span class="dots"></span><span class="price">$6.00</span></div><p class="item-desc">Sandwich de jamón, queso cheddar y mantequilla en pan sobao, con frutas.</p></div>
+        <div class="item"><div class="item-row"><span class="item-name">Minidilla</span><span class="dots"></span><span class="price">$6.00</span></div><p class="item-desc">Quesadilla de pollo y queso monterrey en tortilla de maíz con nachos.</p></div>
+      </div>
+    </div>
+    <div class="salsas"><strong>SALSAS DE LA CASA</strong><span>Cilantro aioli</span><span>Chipotle aioli</span><span>Honey mustard</span><span>Salsa verde de tomatillo</span><span>Guava piña</span><span>Aioli de ajo</span><span>Hot honey</span></div>
+    <p class="menu-foot">Precios sujetos a cambio. El consumo de huevos crudos o poco cocidos puede aumentar el riesgo de enfermedades.</p>
   </div>
 </section>
-<p class="proto-note">Prototipo de portada · propuesta de En el Mapa</p>
+
+<section class="about" id="nosotros" aria-labelledby="about-title">
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <div class="eyebrow"><i></i>Desde 2019</div>
+      <h2 class="sec-title" id="about-title">Siete años colando en Ponce</h2>
+      <p>Colao' abrió en 2019 en Jardines del Caribe con una idea sencilla: café de especialidad bien hecho, desayuno a cualquier hora y una terraza llena de plantas donde dan ganas de quedarse.</p>
+      <p>Hoy seguimos igual. Latte art en cada taza, salsas hechas en casa y una barra que conoce a sus clientes por nombre.</p>
+      <div class="quotes">
+        <blockquote class="quote"><p>“Colao' en Ponce es pa' los café freaks.”</p><cite>La Mafia PR</cite></blockquote>
+        <blockquote class="quote"><p>“Se destaca por sus sándwiches y wraps que acompañan con salsas caseras.”</p><cite>Platea PR</cite></blockquote>
+      </div>
+    </div>
+    <figure class="about-photo">
+      <img src="assets/fotos/terraza.jpg" alt="La terraza de Colao' con mesas y plantas colgantes" loading="lazy">
+      <svg aria-hidden="true"><use href="#mascot"/></svg>
+    </figure>
+  </div>
+</section>
+
+<section class="gallery-sec" id="galeria" aria-labelledby="gal-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="sec-title" id="gal-title">Directo de la barra</h2>
+      <p class="sec-sub">Lo que sale todos los días de la cocina y la máquina de espresso.</p>
+    </div>
+    <div class="gallery">
+      <figure><img src="assets/fotos/avocado-toast.jpg" alt="Avocado toast en Colao'" loading="lazy"><figcaption>Avocado toast</figcaption></figure>
+      <figure><img src="assets/fotos/matcha-tonic.jpg" alt="Matcha en Colao'" loading="lazy"><figcaption>Matcha</figcaption></figure>
+      <figure><img src="assets/fotos/cafe-para-llevar.jpg" alt="Pa&#x27; llevar en Colao'" loading="lazy"><figcaption>Pa&#x27; llevar</figcaption></figure>
+      <figure><img src="assets/fotos/waffles-burrito.jpg" alt="Waffles y burrito en Colao'" loading="lazy"><figcaption>Waffles y burrito</figcaption></figure>
+      <figure><img src="assets/fotos/latte-arte.jpg" alt="Latte en Colao'" loading="lazy"><figcaption>Latte</figcaption></figure>
+      <figure><img src="assets/fotos/huevos-ensalada.jpg" alt="Huevos y ensalada en Colao'" loading="lazy"><figcaption>Huevos y ensalada</figcaption></figure>
+      <figure><img src="assets/fotos/matcha-limon.jpg" alt="Iced matcha en Colao'" loading="lazy"><figcaption>Iced matcha</figcaption></figure>
+    </div>
+    <div class="gallery-cta"><a class="btn btn-ghost" href="https://www.instagram.com/colaoespressobar/" target="_blank" rel="noopener">Síguenos en Instagram · @colaoespressobar</a></div>
+  </div>
+</section>
+
+<section class="ratings-sec" aria-label="Opiniones">
+  <div class="wrap ratings">
+    <div class="rating"><b>4.8</b><span class="stars" aria-hidden="true">★★★★★</span><span>117 opiniones en Google</span></div>
+    <div class="rating"><b>4.8</b><span class="stars" aria-hidden="true">★★★★★</span><span>Más de 400 opiniones en Uber Eats</span></div>
+    <div class="rating"><b>5.0</b><span class="stars" aria-hidden="true">★★★★★</span><span>20 opiniones en Facebook</span></div>
+  </div>
+</section>
+
+<section class="visit" id="visitanos" aria-labelledby="visit-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="sec-title" id="visit-title">Ven a colarte un café</h2>
+    </div>
+    <div class="visit-grid">
+      <div class="visit-info">
+        <div>
+          <h3>HORARIO</h3>
+          <table class="hours">
+            <tr data-day="1"><td>Lunes</td><td>7:30am – 3:00pm</td></tr>
+            <tr data-day="2"><td>Martes</td><td>7:30am – 3:00pm</td></tr>
+            <tr data-day="3"><td>Miércoles</td><td>7:30am – 3:00pm</td></tr>
+            <tr data-day="4"><td>Jueves</td><td>7:30am – 3:00pm</td></tr>
+            <tr data-day="5"><td>Viernes</td><td>7:30am – 3:00pm</td></tr>
+            <tr data-day="6"><td>Sábado</td><td>8:00am – 2:00pm</td></tr>
+            <tr data-day="0"><td>Domingo</td><td>Cerrado</td></tr>
+          </table>
+        </div>
+        <div>
+          <h3>DIRECCIÓN</h3>
+          <p>107 Calle Main Este, Urb. Jardines del Caribe<br>Ponce, PR 00728</p>
+        </div>
+        <div>
+          <h3>CONTACTO</h3>
+          <p>(787) 412-0004 · colaoespressobar@gmail.com</p>
+        </div>
+        <div class="ctas" id="ordenar">
+          <a class="btn btn-solid" href="https://www.google.com/maps/search/?api=1&query=Colao+Espresso+Bar+107+Calle+Main+Este+Ponce" target="_blank" rel="noopener">Cómo llegar</a>
+          <a class="btn btn-ghost" href="https://www.ubereats.com/search?q=Colao%20Espresso%20Bar" target="_blank" rel="noopener">Uber Eats</a>
+          <a class="btn btn-ghost" href="https://www.doordash.com/search/store/colao%20espresso%20bar/" target="_blank" rel="noopener">DoorDash</a>
+        </div>
+      </div>
+      <div class="map">
+        <iframe title="Mapa de Colao' Espresso Bar" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Colao+Espresso+Bar,+107+Calle+Main+Este,+Ponce,+PR+00728&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a class="brand" href="#top" aria-label="Colao' Espresso Bar, volver arriba"><svg aria-hidden="true"><use href="#mascot"/></svg><span>COLAO'</span></a>
+    <nav aria-label="Redes">
+      <a href="https://www.instagram.com/colaoespressobar/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/search/top?q=Colao%20Espresso%20Bar" target="_blank" rel="noopener">Facebook</a>
+      <a href="tel:+17874120004">Llamar</a>
+    </nav>
+    <small>© 2026 Colao' Espresso Bar · Ponce, Puerto Rico</small>
+  </div>
+</footer>
+<p class="proto-note">Prototipo · propuesta de En el Mapa</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
@@ -326,6 +649,10 @@
   const flyDrop = $('#flyDrop');
   const NS = 'http://www.w3.org/2000/svg';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const narrow = window.matchMedia('(max-width: 900px)').matches;
+  if (narrow) svg.setAttribute('viewBox', '280 140 720 560');
+  const START_X = narrow ? 200 : -80;
 
   const limbOrigin = { transformOrigin: '50% 0%' };
   gsap.set([armF, armB, legL, legR], limbOrigin);
@@ -428,7 +755,7 @@
 
   // starting pose
   tl.set(clipG, { attr: { 'clip-path': 'none' } }, 0)
-    .set(char, { x: -80, y: 612 }, 0)
+    .set(char, { x: START_X, y: 612 }, 0)
     .set(inner, { rotation: 0, scaleX: 1, scaleY: 1, y: 0 }, 0)
     .set(flip, { rotation: 0 }, 0)
     .set([armF, armB, legL, legR], { rotation: 0 }, 0)
@@ -436,7 +763,7 @@
     .set(eyes, { scaleY: 1 }, 0)
     .set(bang, { opacity: 0, scale: 0, y: 0 }, 0)
     .set(apos, { scale: 0 }, 0)
-    .set(shadow, { opacity: .18, attr: { cx: -80 } }, 0)
+    .set(shadow, { opacity: .18, attr: { cx: START_X } }, 0)
     .set('#heart', { scaleX: 1, scaleY: 1 }, 0);
 
   // 1. walk in
@@ -543,6 +870,29 @@
     const go = () => tl.play(0);
     (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go);
   }
+
+  // Menu tabs (arrow keys move between categories)
+  const tabs = [...document.querySelectorAll('.tab')];
+  function selectTab(tab) {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      selectTab(n); n.focus();
+    });
+  });
+
+  // Highlight today's hours (Puerto Rico time)
+  const prDay = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Puerto_Rico' })).getDay();
+  const todayRow = document.querySelector(`.hours tr[data-day="${prDay}"]`);
+  if (todayRow) todayRow.classList.add('today');
 
   // test hook: jump to a moment for screenshots
   window.__colaoSeek = (t) => { stopIdle(); clearExtras(); tl.pause(t); };
