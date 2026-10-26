@@ -57,7 +57,7 @@ const quien = (pg, x, y) => pg.evaluate(([x, y]) => { const e = document.element
     await tocar(pg, touch, 8, h - 8); await sleep(pg, 400);
     r['tocar fondo no cierra'] = (await pg.evaluate(ABIERTO)) ? 'ok' : 'CERRÓ';
     const tel = await caja(pg, '.cta.tel'), ig = await caja(pg, '.cta.ig');
-    r['teléfono 787-920-4400'] = tel && tel.href === 'tel:+17879204400' ? 'ok' : 'MAL';
+    r['teléfono 787-920-4410'] = tel && tel.href === 'tel:+17879204410' ? 'ok' : 'MAL';
     r['Instagram @enelmapapr'] = ig && ig.href.includes('instagram.com/enelmapapr') && ig.target === '_blank' ? 'ok' : 'MAL';
     r['Instagram tocable'] = (await quien(pg, ig.x, ig.y)) === 'aviso' ? 'ok' : 'TAPADO';
     await tocar(pg, touch, ig.x, ig.y); await sleep(pg, 1200);
